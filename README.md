@@ -7,11 +7,13 @@ $ bazel build //main:hello-world
 ```
 
 
-# Cross Build(cpu=armv7, arm-himix100-linux-gcc)
+# Cross Build
 
-- step1: config your toolchain path: `toolchain/cc_toolchain_config.bzl`
+- step1: config your toolchain path: `toolchain/BUILD`
 - step2: build
 
-```
+```bash
+# default cpu : armv7
 $ bazel build --config=compiler_config //main:hello-world
+$ bazel build --config=compiler_config --cpu=x86-64 //main:hello-world
 ```
