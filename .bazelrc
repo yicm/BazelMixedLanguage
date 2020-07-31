@@ -1,5 +1,5 @@
 build   --toolchain_resolution_debug
 #build   --incompatible_enable_cc_toolchain_resolution
-build:compiler_config --crosstool_top=//toolchain:compiler_suite
-build:compiler_config --cpu=armv7
+build:compiler_config --crosstool_top=//toolchains:compiler_suite
+build:compiler_config --cpu=ubuntu_gcc
 build:compiler_config --host_crosstool_top=@bazel_tools//tools/cpp:toolchain

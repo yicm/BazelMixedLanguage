@@ -1,14 +1,12 @@
 load(
     "@bazel_tools//tools/cpp:cc_toolchain_config_lib.bzl",
     "feature",
-    "tool_path",
     "flag_set",
     "flag_group",
     "with_feature_set",
 )
 
 load("@bazel_tools//tools/build_defs/cc:action_names.bzl", "ACTION_NAMES")
-load("@bazel_tools//tools/cpp:toolchain_utils.bzl", "find_cpp_toolchain")
 
 load(
     "@bazel_tools//tools/build_defs/cc:action_names.bzl",
@@ -27,15 +25,13 @@ load(
     _PREPROCESS_ASSEMBLE_ACTION_NAME = "PREPROCESS_ASSEMBLE_ACTION_NAME",
 )
 
-
 all_link_actions = [
     _CPP_LINK_EXECUTABLE_ACTION_NAME,
     _CPP_LINK_DYNAMIC_LIBRARY_ACTION_NAME,
     _CPP_LINK_NODEPS_DYNAMIC_LIBRARY_ACTION_NAME,
 ]
 
-def _impl(ctx):
-    # ===========================================================
+def generate_linker_features(ctx):
     features = []
     supports_dynamic_linker_feature = feature(name = "supports_dynamic_linker", enabled = True)
     supports_pic_feature = feature(name = "supports_pic", enabled = True)
@@ -53,7 +49,6 @@ def _impl(ctx):
     dbg_feature = feature(name = "dbg")
     opt_feature = feature(name = "opt")
 
-
     if (ctx.attr.target_os == "linux"):
         # link feature
         default_link_flags_feature = feature(
@@ -66,9 +61,9 @@ def _impl(ctx):
                         flag_group(
                             flags = [
                                 "-lstdc++",
-                                "-Wl,-z,relro,-z,now",
-                                "-no-canonical-prefixes",
-                                "-pass-exit-codes",
+                                #"-Wl,-z,relro,-z,now",
+                                #"-no-canonical-prefixes",
+                                #"-pass-exit-codes",
                             ],
                         ),
                     ],
@@ -164,7 +159,7 @@ def _impl(ctx):
                         _LTO_BACKEND_ACTION_NAME,
                         _CLIF_MATCH_ACTION_NAME,
                     ],
-                    flag_groups = [flag_group(flags = ["-std=c++0x"])],
+                    flag_groups = [flag_group(flags = ["-std=c++11"])],
                 ),
             ],
         )
@@ -228,7 +223,6 @@ def _impl(ctx):
         )
 
 
-
     if (ctx.attr.target_os == "windows" and ctx.attr.cc_compiler == "msys"):
         features = []
     elif (ctx.attr.target_os == "darwin"):
@@ -246,60 +240,20 @@ def _impl(ctx):
             user_compile_flags_feature,
             sysroot_feature,
         ]
-    elif (ctx.attr.target_os == "windows" and ctx.attr.cc_compiler == "clang" and ctx.attr.target_arch == "x86-64" or
-          ctx.attr.target_os == "windows" and ctx.attr.cc_compiler == "mingw" and ctx.attr.target_arch == "x86-64"):
+    elif (ctx.attr.target_os == "windows"
+          and ctx.attr.cc_compiler == "clang"
+          and ctx.attr.target_arch == "x86-64"
+          or
+          ctx.attr.target_os == "windows"
+          and ctx.attr.cc_compiler == "mingw"
+          and ctx.attr.target_arch == "x86-64"):
         features = []
-    elif (ctx.attr.target_os == "linux" and ctx.attr.target_arch == "armv7" or
+    elif (ctx.attr.target_os == "linux" and ctx.attr.target_arch == "armv7a" or
           ctx.attr.target_os == "linux" and ctx.attr.target_arch == "aarch64"):
-        features = [supports_dynamic_linker_feature, supports_pic_feature]
+        features = [
+            default_link_flags_feature,
+            supports_dynamic_linker_feature,
+            supports_pic_feature
+        ]
 
-
-    tool_paths = [
-        tool_path(name = "ar", path = "{}{}ar".format(ctx.attr.compiler_root, ctx.attr.toolchain_identifier)),
-        tool_path(name = "compat-ld", path = "{}{}ld".format(ctx.attr.compiler_root, ctx.attr.toolchain_identifier)),
-        tool_path(name = "cpp", path = "{}{}cpp".format(ctx.attr.compiler_root, ctx.attr.toolchain_identifier)),
-        tool_path(name = "dwp", path = "{}{}dwp".format(ctx.attr.compiler_root, ctx.attr.toolchain_identifier)),
-        tool_path(name = "gcc", path = "{}{}gcc".format(ctx.attr.compiler_root, ctx.attr.toolchain_identifier)),
-        tool_path(name = "ld", path = "{}{}ld".format(ctx.attr.compiler_root, ctx.attr.toolchain_identifier)),
-        tool_path(name = "strip", path = "{}{}strip".format(ctx.attr.compiler_root, ctx.attr.toolchain_identifier)),
-        tool_path(name = "gcov", path = "/bin/false"),
-        tool_path(name = "nm", path = "/bin/false"),
-        tool_path(name = "objcopy", path = "/bin/false"),
-        tool_path(name = "objdump", path = "/bin/false"),
-    ]
-
-    return cc_common.create_cc_toolchain_config_info(
-        ctx = ctx,
-        features = features,
-        action_configs = [],
-        artifact_name_patterns = [],
-        cxx_builtin_include_directories = ctx.attr.include_paths,
-        toolchain_identifier = ctx.attr.toolchain_identifier,
-        host_system_name = ctx.attr.host_os,
-        target_system_name = ctx.attr.target_os,
-        target_cpu = ctx.attr.target_arch,
-        target_libc = ctx.attr.cc_compiler,
-        compiler = ctx.attr.cc_compiler,
-        abi_version = ctx.attr.cc_compiler,
-        abi_libc_version = ctx.attr.cc_compiler,
-        tool_paths = tool_paths,
-        make_variables = [],
-        builtin_sysroot = None,
-        cc_target_os = ctx.attr.target_os,
-    )
-
-my_cc_toolchain_config = rule(
-    implementation = _impl,
-    attrs = {
-        "include_paths" : attr.string_list(doc = "The compiler include directories."),
-        "compiler_root" : attr.string(doc = "The compiler root directory."),
-        "host_os" : attr.string(default = "linux", doc = "The cross toolchain prefix."),
-        "toolchain_identifier": attr.string(),
-        "target_os" : attr.string(default = "linux"),
-        "target_arch" : attr.string(default = "x86-64"),
-        "cc_compiler" : attr.string(default = "gcc", doc = "The compiler type."),
-        "extra_features": attr.string_list(),
-    },
-    provides = [CcToolchainConfigInfo],
-    toolchains = ["@bazel_tools//tools/cpp:toolchain_type"],
-)
+    return features
