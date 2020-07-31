@@ -1,5 +1,14 @@
 build   --toolchain_resolution_debug
-#build   --incompatible_enable_cc_toolchain_resolution
-build:compiler_config --crosstool_top=//toolchains:compiler_suite
-build:compiler_config --cpu=ubuntu_gcc
-build:compiler_config --host_crosstool_top=@bazel_tools//tools/cpp:toolchain
+
+
+# --------------------------
+# Way1: enable/disable --crosstool_top,--cpu
+# --------------------------
+#build:compiler_config --crosstool_top=//toolchains/cpp:compiler_suite
+#build:compiler_config --cpu=ubuntu_gcc
+#build:compiler_config --host_crosstool_top=@bazel_tools//tools/cpp:toolchain
+
+# --------------------------
+# Way2: enable/diable platform
+# --------------------------
+build   --incompatible_enable_cc_toolchain_resolution
