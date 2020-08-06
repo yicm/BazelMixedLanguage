@@ -39,7 +39,7 @@ build:compiler_config --host_crosstool_top=@bazel_tools//tools/cpp:toolchain
 To build this example you can use:
 
 ```
-$ bazel build //main:hello-world
+$ bazel build //cpp:hello-world
 ```
 
 > This compilation will only use the default compiler of the local machine.
@@ -51,12 +51,15 @@ $ bazel build //main:hello-world
 
 ```bash
 # Default compilation configuration, --cpu : ubuntu_gcc
-$ bazel build --config=compiler_config //main:hello-world
+$ bazel build --config=compiler_config //cpp:hello-world
 # Specify the toolchain to compile the target
-$ bazel build --config=compiler_config --cpu=ubuntu_arm_linux_gnueabihf //main:hello-world
+$ bazel build --config=compiler_config --cpu=ubuntu_arm_linux_gnueabihf //cpp:hello-world
 ```
 
-# Platform
+# Platform & Mixed Language
+
+- cpp
+- golang
 
 ## Enable
 
@@ -80,13 +83,28 @@ build   --incompatible_enable_cc_toolchain_resolution
 
 2. Open `toolchains/cpp/BUILD`, and comment `generate_toolchain_suite` function, and uncomment `generate_toolchains` function.
 
+## Query Platforms
+
+```bash
+$ bazel cquery "//platforms:all"
+```
+
 ## Build
 
 ```
 # p_ubuntu_gcc
-$ bazel build main:hello-world --platforms=//platforms:p_ubuntu_gcc
+$ bazel build cpp:hello-world --platforms=//platforms:p_ubuntu_gcc
+
 # p_ubuntu_arm_linux_gnueabihf
-$ bazel build main:hello-world --platforms=//platforms:p_ubuntu_arm_linux_gnueabihf
+$ bazel build cpp:hello-world --platforms=//platforms:p_ubuntu_arm_linux_gnueabihf
+
+$ bazel build --platforms=@io_bazel_rules_go//go/toolchain:linux_amd64 golang/cmd/hello
 ```
 
 > All toolchain information is in file `toolchains/cpp/supported.bzl`.
+
+
+## Issue
+
+- https://github.com/bazelbuild/rules_go/issues/2089
+- could not build with `bazel build --platforms=//platforms:p_ubuntu_gcc //...`

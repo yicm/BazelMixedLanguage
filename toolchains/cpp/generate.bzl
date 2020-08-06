@@ -139,11 +139,7 @@ def generate_toolchains():
                 "@platforms//os:%s" % bazel_exec_platform_info["os"],
             ],
             target_compatible_with = [
-                "//platforms:%s" % platform,
-                #"//platforms:%s" % target_os,
-                #"//platforms:%s" % target_arch,
-                #"//platforms:%s" % toolchain_identifier,
-                #"//platforms:%s" % cc_compiler,
+                "//platforms/devices:%s" % platform,
             ],
             toolchain = "//toolchains/cpp:%s" % cc_name,
             toolchain_type = "@bazel_tools//tools/cpp:toolchain_type",

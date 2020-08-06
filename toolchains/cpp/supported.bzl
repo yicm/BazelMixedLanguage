@@ -12,15 +12,6 @@ TOOLCHAIN_IDENTIFIER = "toolchain_identifier"
 TOOLCHAIN_CC_COMPILER = "cc_compiler"
 
 TOOLCHAIN_SUPPORT_MATRIX = {
-    "hisi": {
-        TOOLCHAIN_HOST_OS : "linux",
-        TOOLCHAIN_TARGET_OS : "linux",
-        TOOLCHAIN_TARGET_ARCH : "armv7",
-        TOOLCHAIN_COMPILER_ROOT : "",
-        TOOLCHAIN_INCLUDE_PATHS : [],
-        TOOLCHAIN_IDENTIFIER : "",
-        TOOLCHAIN_CC_COMPILER : "gcc"
-    },
     "ubuntu_gcc": {
         TOOLCHAIN_HOST_OS : "linux",
         TOOLCHAIN_TARGET_OS : "linux",
