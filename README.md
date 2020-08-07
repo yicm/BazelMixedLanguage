@@ -99,12 +99,19 @@ $ bazel build cpp:hello-world --platforms=//platforms:p_ubuntu_gcc
 $ bazel build cpp:hello-world --platforms=//platforms:p_ubuntu_arm_linux_gnueabihf
 
 $ bazel build --platforms=@io_bazel_rules_go//go/toolchain:linux_amd64 golang/cmd/hello
+$ bazel build --platforms=@io_bazel_rules_go//go/toolchain:linux_arm //golang/cmd/hello
 ```
 
 > All toolchain information is in file `toolchains/cpp/supported.bzl`.
 
 
 ## Issue
+
+```
+$ bazel build --platforms=//platforms:p_ubuntu_arm_linux_gnueabihf //golang/cmd/hello
+RROR: While resolving toolchains for target //golang/cmd/hello:hello: no matching toolchains found for types @io_bazel_rules_go//go:toolchain
+ERROR: Analysis of target '//golang/cmd/hello:hello' failed; build aborted: no matching toolchains found for types @io_bazel_rules_go//go:toolchain
+```
 
 - https://github.com/bazelbuild/rules_go/issues/2089
 - could not build with `bazel build --platforms=//platforms:p_ubuntu_gcc //...`

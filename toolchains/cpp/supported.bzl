@@ -37,7 +37,7 @@ TOOLCHAIN_SUPPORT_MATRIX = {
     "ubuntu_arm_linux_gnueabihf" : {
         TOOLCHAIN_HOST_OS : "linux",
         TOOLCHAIN_TARGET_OS : "linux",
-        TOOLCHAIN_TARGET_ARCH : "aarch64",
+        TOOLCHAIN_TARGET_ARCH : "arm",
         TOOLCHAIN_COMPILER_ROOT : "/usr/bin/",
         TOOLCHAIN_INCLUDE_PATHS : [
             "/usr/arm-linux-gnueabihf/include/",

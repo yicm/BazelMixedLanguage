@@ -249,6 +249,7 @@ def generate_linker_features(ctx):
           and ctx.attr.target_arch == "x86-64"):
         features = []
     elif (ctx.attr.target_os == "linux" and ctx.attr.target_arch == "armv7a" or
+          ctx.attr.target_os == "linux" and ctx.attr.target_arch == "arm" or
           ctx.attr.target_os == "linux" and ctx.attr.target_arch == "aarch64"):
         features = [
             default_link_flags_feature,
