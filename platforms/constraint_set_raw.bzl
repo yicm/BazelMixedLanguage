@@ -1,6 +1,7 @@
 load("//toolchains/cpp:supported.bzl",
     "TOOLCHAIN_SUPPORT_MATRIX",
     "BAZEL_EXEC_PLATFORM_INFO",
+    "TOOLCHAIN_TARGET_DEVICE",
     "TOOLCHAIN_HOST_OS",
     "TOOLCHAIN_TARGET_OS",
     "TOOLCHAIN_TARGET_ARCH",
@@ -21,6 +22,17 @@ def get_available_unique_platform_idetifier():
 
     return results
 
+
+def get_available_device_info_list():
+    results = []
+
+    for (platform, info) in TOOLCHAIN_SUPPORT_MATRIX.items():
+        device = {}
+        device[TOOLCHAIN_TARGET_DEVICE] = platform
+        item = dict(info, **device)
+        results.append(item)
+
+    return results
 
 def get_available_target_os_list():
     results = []

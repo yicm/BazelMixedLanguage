@@ -5,6 +5,7 @@ load("//toolchains/cpp:supported.bzl",
     "TOOLCHAIN_HOST_OS",
     "TOOLCHAIN_TARGET_OS",
     "TOOLCHAIN_TARGET_ARCH",
+    "TOOLCHAIN_TARGET_CGO",
     "TOOLCHAIN_COMPILER_ROOT",
     "TOOLCHAIN_INCLUDE_PATHS",
     "TOOLCHAIN_IDENTIFIER",
@@ -84,6 +85,7 @@ def generate_toolchains():
         host_os = toolchain_info[TOOLCHAIN_HOST_OS]
         target_os = toolchain_info[TOOLCHAIN_TARGET_OS]
         target_arch = toolchain_info[TOOLCHAIN_TARGET_ARCH]
+        target_cgo = toolchain_info[TOOLCHAIN_TARGET_CGO]
         compiler_root = toolchain_info[TOOLCHAIN_COMPILER_ROOT]
         include_paths = toolchain_info[TOOLCHAIN_INCLUDE_PATHS]
         toolchain_identifier = toolchain_info[TOOLCHAIN_IDENTIFIER]
@@ -133,7 +135,7 @@ def generate_toolchains():
             toolchains[platform] = cc_name
 
         bazel_exec_platform_info = BAZEL_EXEC_PLATFORM_INFO
-        print("bazel_exec_platform_info: ", bazel_exec_platform_info)
+        #print("bazel_exec_platform_info: ", bazel_exec_platform_info)
         native.toolchain(
             name = toolchain_name,
             exec_compatible_with = [
@@ -142,6 +144,9 @@ def generate_toolchains():
             ],
             target_compatible_with = [
                 "//platforms/devices:%s" % platform,
+                "@platforms//os:%s" % target_os,
+                "@platforms//cpu:%s" % target_arch,
+                #"@io_bazel_rules_go//go/toolchain:cgo_%s" % target_cgo,
             ],
             toolchain = "//toolchains/cpp:%s" % cc_name,
             toolchain_type = "@bazel_tools//tools/cpp:toolchain_type",

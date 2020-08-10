@@ -3,9 +3,11 @@ BAZEL_EXEC_PLATFORM_INFO = {
     "cpu" : "x86_64"
 }
 
+TOOLCHAIN_TARGET_DEVICE = "target_device"
 TOOLCHAIN_HOST_OS = "host_os"
 TOOLCHAIN_TARGET_OS = "target_os"
 TOOLCHAIN_TARGET_ARCH = "target_arch"
+TOOLCHAIN_TARGET_CGO = "target_cgo"
 TOOLCHAIN_COMPILER_ROOT = "compiler_root"
 TOOLCHAIN_INCLUDE_PATHS = "include_paths"
 TOOLCHAIN_IDENTIFIER = "toolchain_identifier"
@@ -15,7 +17,8 @@ TOOLCHAIN_SUPPORT_MATRIX = {
     "ubuntu_gcc": {
         TOOLCHAIN_HOST_OS : "linux",
         TOOLCHAIN_TARGET_OS : "linux",
-        TOOLCHAIN_TARGET_ARCH : "x86-64",
+        TOOLCHAIN_TARGET_ARCH : "x86_64",
+        TOOLCHAIN_TARGET_CGO: "off", # only on or off
         TOOLCHAIN_COMPILER_ROOT : "/usr/bin/",
         TOOLCHAIN_INCLUDE_PATHS : [
             "/usr/include",
@@ -28,7 +31,8 @@ TOOLCHAIN_SUPPORT_MATRIX = {
     "ubuntu_clang": {
         TOOLCHAIN_HOST_OS : "linux",
         TOOLCHAIN_TARGET_OS : "linux",
-        TOOLCHAIN_TARGET_ARCH : "x86-64",
+        TOOLCHAIN_TARGET_ARCH : "x86_64",
+        TOOLCHAIN_TARGET_CGO: "off", # only on or off
         TOOLCHAIN_COMPILER_ROOT : "",
         TOOLCHAIN_INCLUDE_PATHS : [],
         TOOLCHAIN_IDENTIFIER : "",
@@ -38,6 +42,7 @@ TOOLCHAIN_SUPPORT_MATRIX = {
         TOOLCHAIN_HOST_OS : "linux",
         TOOLCHAIN_TARGET_OS : "linux",
         TOOLCHAIN_TARGET_ARCH : "arm",
+        TOOLCHAIN_TARGET_CGO: "off", # only on or off
         TOOLCHAIN_COMPILER_ROOT : "/usr/bin/",
         TOOLCHAIN_INCLUDE_PATHS : [
             "/usr/arm-linux-gnueabihf/include/",
