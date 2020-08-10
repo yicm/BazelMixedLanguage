@@ -1,4 +1,7 @@
+workspace(name = "bazel_mixed_language")
+
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+load("@bazel_mixed_language//toolchains/cpp:register.bzl", "my_register_toolchains")
 
 # bazel_skylib
 http_archive(
@@ -26,10 +29,8 @@ http_archive(
 )
 
 # register toolchain
-register_toolchains(
-    "//toolchains/cpp:all",
-)
-
+my_register_toolchains()
+#register_toolchains("//toolchains/cpp:all")
 
 # ----------------------------------------------------------------------
 # Config rules_go
@@ -51,7 +52,7 @@ load("@io_bazel_rules_go//go:deps.bzl", "go_rules_dependencies", "go_register_to
 
 go_rules_dependencies()
 
-go_register_toolchains()
+#go_register_toolchains()
 
 # download gazelle
 http_archive(

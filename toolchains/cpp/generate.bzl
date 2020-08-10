@@ -12,10 +12,11 @@ load("//toolchains/cpp:supported.bzl",
 )
 load("//toolchains/cpp:my_cc_toolchain_config.bzl", "my_cc_toolchain_config")
 
+
 def generate_toolchain_suite():
-    toolchains = {}
     native.filegroup(name = "empty")
 
+    toolchains = {}
     for (platform, toolchain_info) in TOOLCHAIN_SUPPORT_MATRIX.items():
         host_os = toolchain_info[TOOLCHAIN_HOST_OS]
         target_os = toolchain_info[TOOLCHAIN_TARGET_OS]
@@ -73,6 +74,7 @@ def generate_toolchain_suite():
         name = "compiler_suite",
         toolchains = toolchains
     )
+
 
 def generate_toolchains():
     toolchains = {}
@@ -146,3 +148,4 @@ def generate_toolchains():
         )
 
     return toolchains
+
