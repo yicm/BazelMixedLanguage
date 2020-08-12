@@ -56,11 +56,11 @@ TOOLCHAIN_SUPPORT_MATRIX = {
         TOOLCHAIN_TARGET_OS : "linux",
         TOOLCHAIN_TARGET_ARCH : "arm",
         TOOLCHAIN_TARGET_CGO: "off", # only on or off
-        TOOLCHAIN_COMPILER_ROOT : "/home/SENSETIME/yichengming/Softwares/arm-himix200-linux/bin/",
+        TOOLCHAIN_COMPILER_ROOT : "{YOUR PATH}/arm-himix200-linux/bin/",
         TOOLCHAIN_INCLUDE_PATHS : [
-            "/home/SENSETIME/yichengming/Softwares/arm-himix200-linux/arm-linux-gnueabi/include/c++/6.3.0/",
-            "/home/SENSETIME/yichengming/Softwares/arm-himix200-linux/lib/gcc/arm-linux-gnueabi/6.3.0/include",
-            "/home/SENSETIME/yichengming/Softwares/arm-himix200-linux/target/usr/include",
+            "{YOUR PATH}/arm-himix200-linux/arm-linux-gnueabi/include/c++/6.3.0/",
+            "{YOUR PATH}/arm-himix200-linux/lib/gcc/arm-linux-gnueabi/6.3.0/include",
+            "{YOUR PATH}/arm-himix200-linux/target/usr/include",
         ],
         TOOLCHAIN_IDENTIFIER : "arm-himix200-linux-",
         TOOLCHAIN_CC_COMPILER : "gcc"
@@ -70,11 +70,11 @@ TOOLCHAIN_SUPPORT_MATRIX = {
         TOOLCHAIN_TARGET_OS : "linux",
         TOOLCHAIN_TARGET_ARCH : "arm",
         TOOLCHAIN_TARGET_CGO: "off", # only on or off
-        TOOLCHAIN_COMPILER_ROOT : "/home/SENSETIME/yichengming/Softwares/arm-himix100-linux/bin/",
+        TOOLCHAIN_COMPILER_ROOT : "{YOUR PATH}/arm-himix100-linux/bin/",
         TOOLCHAIN_INCLUDE_PATHS : [
-	    "/home/SENSETIME/yichengming/Softwares/arm-himix100-linux/target/usr/include/",
-	    "/home/SENSETIME/yichengming/Softwares/arm-himix100-linux/arm-linux-uclibceabi/include/c++/6.3.0",
-	    "/home/SENSETIME/yichengming/Softwares/arm-himix100-linux/lib/gcc/arm-linux-uclibceabi/6.3.0/include",
+	    "{YOUR PATH}/arm-himix100-linux/target/usr/include/",
+	    "{YOUR PATH}/arm-himix100-linux/arm-linux-uclibceabi/include/c++/6.3.0",
+	    "{YOUR PATH}/arm-himix100-linux/lib/gcc/arm-linux-uclibceabi/6.3.0/include",
         ],
         TOOLCHAIN_IDENTIFIER : "arm-himix100-linux-",
         TOOLCHAIN_CC_COMPILER : "gcc"
