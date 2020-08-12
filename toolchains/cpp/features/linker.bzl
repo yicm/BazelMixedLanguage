@@ -227,7 +227,7 @@ def generate_linker_features(ctx):
         features = []
     elif (ctx.attr.target_os == "darwin"):
         features = []
-    elif (ctx.attr.target_os == "linux" and ctx.attr.target_arch == "x86-64" or
+    elif (ctx.attr.target_os == "linux" and ctx.attr.target_arch == "x86_64" or
           ctx.attr.target_os == "linux" and ctx.attr.target_arch == "x86"):
         features = [
             default_compile_flags_feature,
