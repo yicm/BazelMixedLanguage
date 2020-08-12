@@ -146,7 +146,7 @@ def generate_toolchains():
                 "//platforms/devices:%s" % platform,
                 "@platforms//os:%s" % target_os,
                 "@platforms//cpu:%s" % target_arch,
-                #"@io_bazel_rules_go//go/toolchain:cgo_%s" % target_cgo,
+                "@io_bazel_rules_go//go/toolchain:cgo_%s" % target_cgo,
             ],
             toolchain = "//toolchains/cpp:%s" % cc_name,
             toolchain_type = "@bazel_tools//tools/cpp:toolchain_type",

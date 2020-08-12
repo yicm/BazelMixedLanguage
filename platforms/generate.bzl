@@ -34,7 +34,7 @@ def generate_device_platform():
                 # needs three constraint values in rules_go for cross-compile
                 "@platforms//os:%s" % target_os,
                 "@platforms//cpu:%s" % target_arch,
-                #"@io_bazel_rules_go//go/toolchain:cgo_%s" % target_cgo,
+                "@io_bazel_rules_go//go/toolchain:cgo_%s" % target_cgo,
             ],
             visibility = ["//visibility:public"],
         )
