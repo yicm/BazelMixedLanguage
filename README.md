@@ -103,6 +103,10 @@ $ bazel build --platforms=@io_bazel_rules_go//go/toolchain:linux_arm //golang/cm
 
 # build all targets
 $ bazel build --platforms=//platforms:p_ubuntu_gcc //...
+
+# Remote caching
+$ bazel clean
+$ bazel build --remote_cache=grpc://10.151.176.11:8980 cpp:hello-world --platforms=//platforms:p_ubuntu_arm_linux_gnueabihf
 ```
 
 > All toolchain information is in file `toolchains/cpp/supported.bzl`.
