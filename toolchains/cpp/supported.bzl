@@ -3,28 +3,22 @@ BAZEL_EXEC_PLATFORM_INFO = {
     "cpu" : "x86_64"
 }
 
+TOOLCHAIN_TARGET_DEVICE = "target_device"
 TOOLCHAIN_HOST_OS = "host_os"
 TOOLCHAIN_TARGET_OS = "target_os"
 TOOLCHAIN_TARGET_ARCH = "target_arch"
+TOOLCHAIN_TARGET_CGO = "target_cgo"
 TOOLCHAIN_COMPILER_ROOT = "compiler_root"
 TOOLCHAIN_INCLUDE_PATHS = "include_paths"
 TOOLCHAIN_IDENTIFIER = "toolchain_identifier"
 TOOLCHAIN_CC_COMPILER = "cc_compiler"
 
 TOOLCHAIN_SUPPORT_MATRIX = {
-    "hisi": {
-        TOOLCHAIN_HOST_OS : "linux",
-        TOOLCHAIN_TARGET_OS : "linux",
-        TOOLCHAIN_TARGET_ARCH : "armv7",
-        TOOLCHAIN_COMPILER_ROOT : "",
-        TOOLCHAIN_INCLUDE_PATHS : [],
-        TOOLCHAIN_IDENTIFIER : "",
-        TOOLCHAIN_CC_COMPILER : "gcc"
-    },
     "ubuntu_gcc": {
         TOOLCHAIN_HOST_OS : "linux",
         TOOLCHAIN_TARGET_OS : "linux",
-        TOOLCHAIN_TARGET_ARCH : "x86-64",
+        TOOLCHAIN_TARGET_ARCH : "x86_64",
+        TOOLCHAIN_TARGET_CGO: "off", # only on or off
         TOOLCHAIN_COMPILER_ROOT : "/usr/bin/",
         TOOLCHAIN_INCLUDE_PATHS : [
             "/usr/include",
@@ -37,7 +31,8 @@ TOOLCHAIN_SUPPORT_MATRIX = {
     "ubuntu_clang": {
         TOOLCHAIN_HOST_OS : "linux",
         TOOLCHAIN_TARGET_OS : "linux",
-        TOOLCHAIN_TARGET_ARCH : "x86-64",
+        TOOLCHAIN_TARGET_ARCH : "x86_64",
+        TOOLCHAIN_TARGET_CGO: "off", # only on or off
         TOOLCHAIN_COMPILER_ROOT : "",
         TOOLCHAIN_INCLUDE_PATHS : [],
         TOOLCHAIN_IDENTIFIER : "",
@@ -46,7 +41,8 @@ TOOLCHAIN_SUPPORT_MATRIX = {
     "ubuntu_arm_linux_gnueabihf" : {
         TOOLCHAIN_HOST_OS : "linux",
         TOOLCHAIN_TARGET_OS : "linux",
-        TOOLCHAIN_TARGET_ARCH : "aarch64",
+        TOOLCHAIN_TARGET_ARCH : "arm",
+        TOOLCHAIN_TARGET_CGO: "off", # only on or off
         TOOLCHAIN_COMPILER_ROOT : "/usr/bin/",
         TOOLCHAIN_INCLUDE_PATHS : [
             "/usr/arm-linux-gnueabihf/include/",
@@ -54,5 +50,34 @@ TOOLCHAIN_SUPPORT_MATRIX = {
         ],
         TOOLCHAIN_IDENTIFIER : "arm-linux-gnueabihf-",
         TOOLCHAIN_CC_COMPILER : "gcc"
+    },
+    "hisi_himix200" : {
+        TOOLCHAIN_HOST_OS : "linux",
+        TOOLCHAIN_TARGET_OS : "linux",
+        TOOLCHAIN_TARGET_ARCH : "arm",
+        TOOLCHAIN_TARGET_CGO: "off", # only on or off
+        TOOLCHAIN_COMPILER_ROOT : "{YOUR PATH}/arm-himix200-linux/bin/",
+        TOOLCHAIN_INCLUDE_PATHS : [
+            "{YOUR PATH}/arm-himix200-linux/arm-linux-gnueabi/include/c++/6.3.0/",
+            "{YOUR PATH}/arm-himix200-linux/lib/gcc/arm-linux-gnueabi/6.3.0/include",
+            "{YOUR PATH}/arm-himix200-linux/target/usr/include",
+        ],
+        TOOLCHAIN_IDENTIFIER : "arm-himix200-linux-",
+        TOOLCHAIN_CC_COMPILER : "gcc"
+    },
+    "hisi_himix100" : {
+        TOOLCHAIN_HOST_OS : "linux",
+        TOOLCHAIN_TARGET_OS : "linux",
+        TOOLCHAIN_TARGET_ARCH : "arm",
+        TOOLCHAIN_TARGET_CGO: "off", # only on or off
+        TOOLCHAIN_COMPILER_ROOT : "{YOUR PATH}/arm-himix100-linux/bin/",
+        TOOLCHAIN_INCLUDE_PATHS : [
+	    "{YOUR PATH}/arm-himix100-linux/target/usr/include/",
+	    "{YOUR PATH}/arm-himix100-linux/arm-linux-uclibceabi/include/c++/6.3.0",
+	    "{YOUR PATH}/arm-himix100-linux/lib/gcc/arm-linux-uclibceabi/6.3.0/include",
+        ],
+        TOOLCHAIN_IDENTIFIER : "arm-himix100-linux-",
+        TOOLCHAIN_CC_COMPILER : "gcc"
     }
+
 }

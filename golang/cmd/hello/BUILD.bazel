@@ -1,0 +1,16 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library")
+
+go_library(
+    name = "go_default_library",
+    srcs = ["main.go"],
+    importpath = "github.com/yicm/BazelMixedLanguage/cmd/hello",
+    visibility = ["//visibility:private"],
+    deps = ["//golang/cmd/hello/cli:go_default_library"],
+)
+
+go_binary(
+    name = "hello",
+    embed = [":go_default_library"],
+    visibility = ["//visibility:public"],
+    cgo = True,
+)
