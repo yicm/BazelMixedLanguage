@@ -1,5 +1,18 @@
 build   --toolchain_resolution_debug
+# if comment it, Bazel will cache the failure and not bother re-running analysis,
+# and then no debug output is added
+#build   --nokeep_state_after_build
 
+
+# Use targets in @platforms//cpu and @platforms//os.
+# @bazel_tools//platforms will be removed by
+# --incompatible_use_platforms_repo_for_constraints
+#build   --incompatible_use_platforms_repo_for_constraints
+
+# Set golang proxy
+test --action_env=GOPROXY=https://goproxy.cn
+build --action_env=GOPROXY=https://goproxy.cn
+run --action_env=GOPROXY=https://goproxy.cn
 
 # --------------------------
 # Way1: enable/disable --crosstool_top,--cpu

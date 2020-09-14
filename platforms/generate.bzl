@@ -1,102 +1,40 @@
 load("//platforms:constraint_set_raw.bzl",
-    "get_available_unique_platform_idetifier",
-    "get_available_target_os_list",
-    "get_available_target_arch_list",
-    "get_available_identifier_list",
-    "get_available_compiler_type_list",
+    "get_available_device_info_list",
 )
 
 load("//toolchains/cpp:supported.bzl",
+    "TOOLCHAIN_TARGET_DEVICE",
+    "TOOLCHAIN_HOST_OS",
     "TOOLCHAIN_TARGET_OS",
     "TOOLCHAIN_TARGET_ARCH",
+    "TOOLCHAIN_TARGET_CGO",
+    "TOOLCHAIN_COMPILER_ROOT",
+    "TOOLCHAIN_INCLUDE_PATHS",
     "TOOLCHAIN_IDENTIFIER",
     "TOOLCHAIN_CC_COMPILER",
 )
 
-def generate_constraint_set_platform():
-    available = get_available_unique_platform_idetifier()
 
-    native.constraint_setting(
-        name = "platform",
-        visibility = ["//visibility:public"],
-    )
-
-    for item in available:
-        native.constraint_value(
-            name = item,
-            constraint_setting = ":platform",
-            visibility = ["//visibility:public"],
-        )
-
-
-def generate_constraint_set_target_os():
-    available = get_available_target_os_list()
-
-    native.constraint_setting(
-        name = TOOLCHAIN_TARGET_OS,
-        visibility = ["//visibility:public"],
-    )
-
-    for item in available:
-        native.constraint_value(
-            name = item,
-            constraint_setting = ":%s" % TOOLCHAIN_TARGET_OS,
-            visibility = ["//visibility:public"],
-        )
-
-def generate_constraint_set_target_arch():
-    available = get_available_target_arch_list()
-
-    native.constraint_setting(
-        name = TOOLCHAIN_TARGET_ARCH,
-        visibility = ["//visibility:public"],
-    )
-
-    for item in available:
-        native.constraint_value(
-            name = item,
-            constraint_setting = ":%s" % TOOLCHAIN_TARGET_ARCH,
-            visibility = ["//visibility:public"],
-        )
-
-def generate_constraint_set_toolchain_identifier():
-    available = get_available_identifier_list()
-
-    native.constraint_setting(
-        name = TOOLCHAIN_IDENTIFIER,
-        visibility = ["//visibility:public"],
-    )
-
-    for item in available:
-        native.constraint_value(
-            name = item,
-            constraint_setting = ":%s" % TOOLCHAIN_IDENTIFIER,
-            visibility = ["//visibility:public"],
-        )
-
-def generate_constraint_set_compiler_type():
-    available = get_available_compiler_type_list()
-
-    native.constraint_setting(
-        name = TOOLCHAIN_CC_COMPILER,
-        visibility = ["//visibility:public"],
-    )
-
-    for item in available:
-        native.constraint_value(
-            name = item,
-            constraint_setting = ":%s" % TOOLCHAIN_CC_COMPILER,
-            visibility = ["//visibility:public"],
-        )
 
 def generate_device_platform():
-    available = get_available_unique_platform_idetifier()
+    available = get_available_device_info_list()
 
-    for platform in available:
+    for device in available:
+        target_platform = device[TOOLCHAIN_TARGET_DEVICE]
+        target_os = device[TOOLCHAIN_TARGET_OS]
+        target_arch = device[TOOLCHAIN_TARGET_ARCH]
+        target_cgo = device[TOOLCHAIN_TARGET_CGO]
+        print("target_os = ", target_os)
+        print("target_arch = ", target_arch)
+        print("target_cgo = ", target_cgo)
         native.platform(
-            name = "p_%s" % platform,
+            name = "p_%s" % target_platform,
             constraint_values = [
-                "//platforms:%s" % platform
+                "//platforms/devices:%s" % target_platform,
+                # needs three constraint values in rules_go for cross-compile
+                "@platforms//os:%s" % target_os,
+                "@platforms//cpu:%s" % target_arch,
+                "@io_bazel_rules_go//go/toolchain:cgo_%s" % target_cgo,
             ],
             visibility = ["//visibility:public"],
         )
