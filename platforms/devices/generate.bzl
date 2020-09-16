@@ -17,4 +17,8 @@ def generate_constraint_set_platform():
             visibility = ["//visibility:public"],
         )
 
-
+        native.config_setting(
+            name = "is_%s" % item,
+            constraint_values = [":%s" % item],
+            visibility = ["//visibility:public"]
+        )

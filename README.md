@@ -1,7 +1,24 @@
+# Features
+
+- Support to build cpp application or library with bazel platform
+- Support to build golang application or library with bazel platform
+- Support to build android jni library with bazel platform
+
 # Environment
 
 - WSL,Ubuntu18.04
-- Build label: 3.3.1
+- Bazel 3.3+
+- Android JNI Library
+    - Local JDK(just for using `javah`)
+        - `sudo apt install openjdk-8-jdk-headless`
+    - Android sdkmanager (https://developer.android.com/studio#command-tools)
+        - config the environment of `sdkmanager`
+        - `sdkmanager --sdk_root=$HOME/Android --list`
+        - `sdkmanager --sdk_root=$HOME/Android 'build-tools;29.0.2'`
+        - `sdkmanager --sdk_root=$HOME/Android 'platforms;android-28'`
+        - `sdkmanager --install "ndk;18.1.5063045"`
+            - more older releases: https://developer.android.com/ndk/downloads/older_releases ,also you can get the support list by `--list`
+
 
 ```bash
 $ sudo apt-get install gcc
@@ -91,7 +108,7 @@ $ bazel cquery "//platforms:all"
 
 ## Build
 
-```
+```bash
 # p_ubuntu_gcc
 $ bazel build cpp:hello-world --platforms=//platforms:p_ubuntu_gcc
 
@@ -107,6 +124,10 @@ $ bazel build --platforms=//platforms:p_ubuntu_gcc //...
 # Remote caching
 $ bazel clean
 $ bazel build --remote_cache=grpc://10.151.176.11:8980 cpp:hello-world --platforms=//platforms:p_ubuntu_arm_linux_gnueabihf
+
+# Android JNI Library
+$ bazel build --platforms=//platforms:p_android_armv7a android:gen_jni_header
+$ bazel build --platforms=//platforms:p_android_armv7a android:jni_lib_shared
 ```
 
 > All toolchain information is in file `toolchains/cpp/supported.bzl`.

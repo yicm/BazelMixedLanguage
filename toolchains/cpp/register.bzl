@@ -8,6 +8,7 @@ load("//toolchains/cpp:supported.bzl",
     "TOOLCHAIN_INCLUDE_PATHS",
     "TOOLCHAIN_IDENTIFIER",
     "TOOLCHAIN_CC_COMPILER",
+    "TOOLCHAIN_EMPTY",
 )
 
 def _generate_toolchain_names():
@@ -16,6 +17,12 @@ def _generate_toolchain_names():
         host_os = toolchain_info[TOOLCHAIN_HOST_OS]
         target_os = toolchain_info[TOOLCHAIN_TARGET_OS]
         target_arch = toolchain_info[TOOLCHAIN_TARGET_ARCH]
+
+        toolchain_empty = toolchain_info[TOOLCHAIN_EMPTY]
+        if toolchain_empty == 'true':
+            print("toolchain does not need to set, continuing.")
+            continue
+
         compiler_root = toolchain_info[TOOLCHAIN_COMPILER_ROOT]
         include_paths = toolchain_info[TOOLCHAIN_INCLUDE_PATHS]
         toolchain_identifier = toolchain_info[TOOLCHAIN_IDENTIFIER]

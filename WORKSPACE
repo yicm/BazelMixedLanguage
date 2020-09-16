@@ -39,6 +39,21 @@ http_archive(
 my_register_toolchains()
 #register_toolchains("//toolchains/cpp:all")
 
+# ---------------------------------------------------------
+# Android
+# ---------------------------------------------------------
+android_sdk_repository(
+    name = "androidsdk",
+    path = "/home/autosdk/Android",
+    #api_level = 19,
+    #build_tools_version = "25.0.0",
+)
+
+android_ndk_repository(
+    name = "androidndk",
+    path = "/home/autosdk/Android/ndk/18.1.5063045",
+)
+register_toolchains("@androidndk//:all")
 
 # ----------------------------------------------------------------------
 # Buildfarm

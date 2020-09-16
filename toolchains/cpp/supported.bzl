@@ -12,12 +12,14 @@ TOOLCHAIN_COMPILER_ROOT = "compiler_root"
 TOOLCHAIN_INCLUDE_PATHS = "include_paths"
 TOOLCHAIN_IDENTIFIER = "toolchain_identifier"
 TOOLCHAIN_CC_COMPILER = "cc_compiler"
+TOOLCHAIN_EMPTY = "toolchain_empty"
 
 TOOLCHAIN_SUPPORT_MATRIX = {
     "ubuntu_gcc": {
         TOOLCHAIN_HOST_OS : "linux",
         TOOLCHAIN_TARGET_OS : "linux",
         TOOLCHAIN_TARGET_ARCH : "x86_64",
+        TOOLCHAIN_EMPTY : "false",
         TOOLCHAIN_TARGET_CGO: "off", # only on or off
         TOOLCHAIN_COMPILER_ROOT : "/usr/bin/",
         TOOLCHAIN_INCLUDE_PATHS : [
@@ -32,6 +34,7 @@ TOOLCHAIN_SUPPORT_MATRIX = {
         TOOLCHAIN_HOST_OS : "linux",
         TOOLCHAIN_TARGET_OS : "linux",
         TOOLCHAIN_TARGET_ARCH : "x86_64",
+        TOOLCHAIN_EMPTY : "false",
         TOOLCHAIN_TARGET_CGO: "off", # only on or off
         TOOLCHAIN_COMPILER_ROOT : "",
         TOOLCHAIN_INCLUDE_PATHS : [],
@@ -42,6 +45,7 @@ TOOLCHAIN_SUPPORT_MATRIX = {
         TOOLCHAIN_HOST_OS : "linux",
         TOOLCHAIN_TARGET_OS : "linux",
         TOOLCHAIN_TARGET_ARCH : "arm",
+        TOOLCHAIN_EMPTY : "false",
         TOOLCHAIN_TARGET_CGO: "off", # only on or off
         TOOLCHAIN_COMPILER_ROOT : "/usr/bin/",
         TOOLCHAIN_INCLUDE_PATHS : [
@@ -55,6 +59,7 @@ TOOLCHAIN_SUPPORT_MATRIX = {
         TOOLCHAIN_HOST_OS : "linux",
         TOOLCHAIN_TARGET_OS : "linux",
         TOOLCHAIN_TARGET_ARCH : "arm",
+        TOOLCHAIN_EMPTY : "false",
         TOOLCHAIN_TARGET_CGO: "off", # only on or off
         TOOLCHAIN_COMPILER_ROOT : "{YOUR PATH}/arm-himix200-linux/bin/",
         TOOLCHAIN_INCLUDE_PATHS : [
@@ -69,6 +74,7 @@ TOOLCHAIN_SUPPORT_MATRIX = {
         TOOLCHAIN_HOST_OS : "linux",
         TOOLCHAIN_TARGET_OS : "linux",
         TOOLCHAIN_TARGET_ARCH : "arm",
+        TOOLCHAIN_EMPTY : "false",
         TOOLCHAIN_TARGET_CGO: "off", # only on or off
         TOOLCHAIN_COMPILER_ROOT : "{YOUR PATH}/arm-himix100-linux/bin/",
         TOOLCHAIN_INCLUDE_PATHS : [
@@ -78,6 +84,25 @@ TOOLCHAIN_SUPPORT_MATRIX = {
         ],
         TOOLCHAIN_IDENTIFIER : "arm-himix100-linux-",
         TOOLCHAIN_CC_COMPILER : "gcc"
-    }
+    },
+    "android_armv7a" : {
+        TOOLCHAIN_HOST_OS : "linux",
+        TOOLCHAIN_TARGET_OS : "android",
+        TOOLCHAIN_TARGET_ARCH : "arm",
+        TOOLCHAIN_EMPTY : "true",
+    },
+    "android_aarch64" : {
+        TOOLCHAIN_HOST_OS : "linux",
+        TOOLCHAIN_TARGET_OS : "android",
+        TOOLCHAIN_TARGET_ARCH : "aarch64",
+        TOOLCHAIN_EMPTY : "true",
+    },
+    "android_x86_64" : {
+        TOOLCHAIN_HOST_OS : "linux",
+        TOOLCHAIN_TARGET_OS : "android",
+        TOOLCHAIN_TARGET_ARCH : "x86_64",
+        TOOLCHAIN_EMPTY : "true",
+    },
+
 
 }

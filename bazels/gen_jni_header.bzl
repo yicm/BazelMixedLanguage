@@ -20,17 +20,32 @@ def _impl(ctx):
         ":execroot/__main__:%s" % ctx.attr.base_dir
     )
 
+    output_dir = ''
+    output_files = []
     deps = depset(transitive = [dep.files for dep in ctx.attr.deps]).to_list()
     for f in ctx.attr.classes:
         output_filename = '%s.h' % f.replace('.', '_')
         out = ctx.actions.declare_file(output_filename)
+        output_files.append(out)
+        output_dir = out.dirname
         run_cmd = cmd + ' -d %s ' % out.dirname + f
-        print(run_cmd)
+    
         ctx.actions.run_shell(
             inputs = deps + classpath + ctx.files._jdk,
             command = run_cmd,
             outputs = [out],
         )
+
+    return [
+        # create a provider which says that this
+        # out file should be made available as a header
+        CcInfo(compilation_context = cc_common.create_compilation_context(
+            # pass out the include path for finding this header
+            includes = depset([output_dir]),
+            # and the actual header here.
+            headers = depset(output_files)
+        ))
+    ]
 
 gen_jni_header= rule(
     implementation = _impl,
@@ -50,4 +65,3 @@ gen_jni_header= rule(
         "outputs": attr.output_list(allow_empty=False, mandatory=True),
     },
 )
-
