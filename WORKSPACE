@@ -56,7 +56,7 @@ android_ndk_repository(
 register_toolchains("@androidndk//:all")
 
 # ----------------------------------------------------------------------
-# Buildfarm
+# Remote caching & building :Buildfarm
 # ----------------------------------------------------------------------
 # sha256 sum xx.zip
 BUILDFARM_EXTERNAL_COMMIT = "f0cb2c3cd3531cacd828acddc1046e3c6f6cc7fd"
@@ -79,10 +79,20 @@ buildfarm_init()
 
 
 # ----------------------------------------------------------------------
-# Config rules_go
+# Logger
 # ----------------------------------------------------------------------
-load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+# download spdlog
+http_archive(
+    name = "spdlog",
+    build_file = "//bazels:spdlog.BUILD",
+    sha256 = "1e68e9b40cf63bb022a4b18cdc1c9d88eb5d97e4fd64fa981950a9cacf57a4bf",
+    strip_prefix = "spdlog-1.8.0",
+    urls = ["https://github.com/gabime/spdlog/archive/v1.8.0.tar.gz"],
+)
 
+# ---------------------------------------------------------
+# Golang
+# ---------------------------------------------------------
 # download rules_go
 http_archive(
     name = "io_bazel_rules_go",
@@ -100,9 +110,7 @@ go_rules_dependencies()
 
 go_register_toolchains()
 
-# ----------------------------------------------------------------------
 # download gazelle
-# ----------------------------------------------------------------------
 http_archive(
     name = "bazel_gazelle",
     sha256 = "cdb02a887a7187ea4d5a27452311a75ed8637379a1287d8eeb952138ea485f7d",
@@ -117,9 +125,7 @@ load("@bazel_gazelle//:deps.bzl", "gazelle_dependencies")
 
 gazelle_dependencies()
 
-# ----------------------------------------------------------------------
 # load go repsitories
-# ----------------------------------------------------------------------
 load("//:go_repositories.bzl", "go_repositories")
 
 # gazelle:repository_macro go_repositories.bzl%go_repositories
