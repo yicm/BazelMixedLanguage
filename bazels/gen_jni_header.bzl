@@ -5,7 +5,7 @@ def _android_jar(android_api_level):
 
 def _impl(ctx):
     java_home = str(ctx.attr._jdk[java_common.JavaRuntimeInfo].java_home)
-    javah = "%s/bin/javah" % java_home
+    javah = "%s/bin/javac" % java_home
     transitive_deps = []
 
     if ctx.attr._android_jar:
@@ -24,12 +24,13 @@ def _impl(ctx):
     output_files = []
     deps = depset(transitive = [dep.files for dep in ctx.attr.deps]).to_list()
     for f in ctx.attr.classes:
+        src_file = ctx.attr.base_dir + '/%s.java' % f.replace('.', '/')
         output_filename = '%s.h' % f.replace('.', '_')
         out = ctx.actions.declare_file(output_filename)
         output_files.append(out)
         output_dir = out.dirname
-        run_cmd = cmd + ' -d %s ' % out.dirname + f
-    
+        run_cmd = cmd + ' -h %s ' % out.dirname + '-d %s ' % out.dirname + src_file
+
         ctx.actions.run_shell(
             inputs = deps + classpath + ctx.files._jdk,
             command = run_cmd,

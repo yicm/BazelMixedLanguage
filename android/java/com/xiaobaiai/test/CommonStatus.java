@@ -8,7 +8,7 @@ public class CommonStatus {
 
         private int status_;
         Status(int status) {
-            status_ status;
+            status_ = status;
         }
 
         public int getStatus() {
@@ -31,6 +31,7 @@ public class CommonStatus {
                 return s;
             }
         }
+        return null;
     }
 
     public void setStatus(int status) {
