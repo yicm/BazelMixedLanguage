@@ -1,15 +1,17 @@
-# Features
+[toc]
+
+# 1 Features
 
 - Support to build cpp application or library with bazel platform
 - Support to build golang application or library with bazel platform
 - Support to build android jni library with bazel platform
 
-# Environment
+# 2 Environment
 
 - WSL,Ubuntu18.04
 - Bazel 3.3+
 - Android JNI Library
-    - Local JDK(just for using `javah`)
+    - Local JDK 8+(just for using `javah` or `javac` to generate native headers)
         - `sudo apt install openjdk-8-jdk-headless`
     - Android sdkmanager (https://developer.android.com/studio#command-tools)
         - config the environment of `sdkmanager`
@@ -27,9 +29,9 @@ $ sudo apt-get install gcc-arm-linux-gnueabihf
 $ sudo apt-get install g++-arm-linux-gnueabihf
 ```
 
-# Non-Platform
+# 3 Non-Platform
 
-## Enable
+## 3.1 Enable
 
 1. Open `.bazelrc` file:
 
@@ -51,7 +53,7 @@ build:compiler_config --host_crosstool_top=@bazel_tools//tools/cpp:toolchain
 
 2. Open `toolchains/cpp/BUILD`, and comment `generate_toolchains` function, and uncomment `generate_toolchain_suite` function.
 
-## Default Build(cpu=k8)
+## 3.2 Default Build(cpu=k8)
 
 To build this example you can use:
 
@@ -61,7 +63,7 @@ $ bazel build //cpp:hello-world
 
 > This compilation will only use the default compiler of the local machine.
 
-## Cross Build
+## 3.3 Cross Build
 
 - step1: config your toolchains path: `toolchain/cpp/supported.bzl`
 - step2: build
@@ -73,12 +75,12 @@ $ bazel build --config=compiler_config //cpp:hello-world
 $ bazel build --config=compiler_config --cpu=ubuntu_arm_linux_gnueabihf //cpp:hello-world
 ```
 
-# Platform & Mixed Language
+# 4 Platform & Mixed Language
 
 - cpp
 - golang
 
-## Enable
+## 4.1 Enable
 
 1. Open `.bazelrc` file:
 
@@ -100,13 +102,13 @@ build   --incompatible_enable_cc_toolchain_resolution
 
 2. Open `toolchains/cpp/BUILD`, and comment `generate_toolchain_suite` function, and uncomment `generate_toolchains` function.
 
-## Query Supported Platforms
+## 4.2 Query Supported Platforms
 
 ```bash
 $ bazel cquery "//platforms:all"
 ```
 
-## Build
+## 4.3 Build
 
 ```bash
 # p_ubuntu_gcc
@@ -128,11 +130,7 @@ $ bazel build --remote_cache=grpc://10.151.176.11:8980 cpp:hello-world --platfor
 # Android JNI Library
 $ bazel build --platforms=//platforms:p_android_armv7a android:gen_jni_header
 $ bazel build --platforms=//platforms:p_android_armv7a android:jni_lib_shared
+$ bazel build --platforms=//platforms:p_android_aarch64 android:jni_lib_shared
 ```
 
 > All toolchain information is in file `toolchains/cpp/supported.bzl`.
-
-## Related Issues
-
-- https://github.com/bazelbuild/rules_go/issues/2591
-- https://github.com/bazelbuild/rules_go/issues/2089
