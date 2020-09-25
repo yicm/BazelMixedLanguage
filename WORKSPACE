@@ -3,6 +3,14 @@ workspace(name = "bazel_mixed_language")
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 load("@bazel_mixed_language//toolchains/cpp:register.bzl", "my_register_toolchains")
 
+# ----------------------------------------------------------------------
+# environment get/set
+# ----------------------------------------------------------------------
+load("//bazels:my_repository_rules.bzl", "my_set_env_vars")
+my_set_env_vars(
+    name = "my_set_env_vars"
+)
+load("@my_set_env_vars//:env.bzl", "HOME")
 
 # ----------------------------------------------------------------------
 # bazel_skylib
@@ -17,7 +25,6 @@ http_archive(
 )
 load("@bazel_skylib//:workspace.bzl", "bazel_skylib_workspace")
 bazel_skylib_workspace()
-
 
 # ----------------------------------------------------------------------
 # bazelbuild/platforms
@@ -44,14 +51,14 @@ my_register_toolchains()
 # ---------------------------------------------------------
 android_sdk_repository(
     name = "androidsdk",
-    path = "/home/autosdk/Android",
+    path = HOME + "/Android",
     #api_level = 19,
     #build_tools_version = "25.0.0",
 )
 
 android_ndk_repository(
     name = "androidndk",
-    path = "/home/autosdk/Android/ndk/18.1.5063045",
+    path = HOME + "/Android/ndk/18.1.5063045",
 )
 register_toolchains("@androidndk//:all")
 

@@ -16,7 +16,7 @@
         - `sdkmanager --sdk_root=$HOME/Android --list`
         - `sdkmanager --sdk_root=$HOME/Android 'build-tools;29.0.2'`
         - `sdkmanager --sdk_root=$HOME/Android 'platforms;android-28'`
-        - `sdkmanager --install "ndk;18.1.5063045"`
+        - `sdkmanager --sdk_root=$HOME/Android --install "ndk;18.1.5063045"`
             - more older releases: https://developer.android.com/ndk/downloads/older_releases ,also you can get the support list by `--list`
 
 
