@@ -1,5 +1,5 @@
 
-package com.xiaobaiai.test;
+package net.xiaobaiai.test;
 
 public class CommonStatus {
     public enum Status {

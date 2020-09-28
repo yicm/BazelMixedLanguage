@@ -6,13 +6,14 @@ gen_jni_header(
     android_api_level = 28,
     base_dir = "android/java",
     deps = glob([
-        "java/com/xiaobaiai/test/*.java",
+        "java/net/xiaobaiai/test/base/*.java",
+        "java/net/xiaobaiai/test/*.java",
     ]),
     classes = [
-        "com.xiaobaiai.test.Test",
+        "net.xiaobaiai.test.APIs",
     ],
     outputs = [
-        "com_xiaobaiai_test_Test.h",
+        "net_xiaobaiai_test_APIs.h",
     ],
 )
 
@@ -23,19 +24,20 @@ cc_library(
     ]),
     srcs = glob([
         "jni/*.cpp",
-    ]),
-    #+ [
-    #    "@bazel_tools//tools/jdk:current_java_runtime",
-    #],    
+        "jni/*.c",
+    ]),  
     copts = [
-        #"-Iexternal/local_jdk/include",
-        #"-Iexternal/local_jdk/include/linux",        
-        #"-Isrc",
+        "-DAPI_EXPORT_ON",
+        "-DANDROID_LOGGER_ON",
     ],
     deps = [
         ":gen_jni_header",      
     ],
-    linkopts = ["-llog"],
+    linkopts = [
+        "-llog",
+        "-landroid",
+        "-lm",
+    ],
     visibility = ["//visibility:public"],
 )
 
@@ -44,16 +46,20 @@ cc_binary(
     srcs = glob([
         "jni/*.cpp",
         "jni/*.h",
+        "jni/*.c",
     ]),
     linkshared = True,
     copts = [            
-        
+        "-DAPI_EXPORT_ON",
+        "-DANDROID_LOGGER_ON",
     ],
     deps = [
         ":gen_jni_header",        
     ],
     linkopts = [
         "-llog",
+        "-landroid",
+        "-lm",
     ],
     visibility = ["//visibility:public"],
 )
