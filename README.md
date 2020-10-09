@@ -58,7 +58,7 @@ build:compiler_config --host_crosstool_top=@bazel_tools//tools/cpp:toolchain
 
 To build this example you can use:
 
-```
+```bash
 $ bazel build //cpp:hello-world
 ```
 
@@ -127,21 +127,21 @@ $ bazel build cpp:hello-world --platforms=//platforms:p_ubuntu_arm_linux_gnueabi
 
 ### 4.3.2 Golang
 
-```
+```bash
 $ bazel build --platforms=@io_bazel_rules_go//go/toolchain:linux_amd64 golang/cmd/hello
 $ bazel build --platforms=@io_bazel_rules_go//go/toolchain:linux_arm //golang/cmd/hello
 ```
 
 ### 4.3.3 All
 
-```
+```bash
 # build all targets
 $ bazel build --platforms=//platforms:p_ubuntu_gcc //...
 ```
 
 ### 4.3.4 Remote caching
 
-```
+```bash
 # Remote caching
 $ bazel clean
 $ bazel build --remote_cache=grpc://10.151.176.11:8980 cpp:hello-world --platforms=//platforms:p_ubuntu_arm_linux_gnueabihf
@@ -149,7 +149,7 @@ $ bazel build --remote_cache=grpc://10.151.176.11:8980 cpp:hello-world --platfor
 
 ### 4.3.5 JNI library
 
-```
+```bash
 # Only Build Android JNI Library
 $ bazel build --platforms=//platforms:p_android_armv7a android:gen_jni_header
 $ bazel build --platforms=//platforms:p_android_armv7a android:jni_lib_shared
@@ -158,7 +158,7 @@ $ bazel build --platforms=//platforms:p_android_aarch64 android:jni_lib_shared
 
 ### 4.3.6 Android APK
 
-```
+```bash
 # Build and Install Android Application(including jni/java library)
 # First, you need to turn off the bazel platform feature in .bazelrc
 # archs: armeabi-v7a/arm64-v8/x86
@@ -172,6 +172,13 @@ $ bazel build android/demo/app/src/main:app --config=android_arm64-v8a
 $ bazel mobile-install android/demo/app/src/main:app
 # way2
 $ adb install bazel-bin/android/demo/app/src/main/app.apk
+```
+
+```bash
+# view APK package information
+$ zipinfo -l app.apk
+# view application stack information
+$ adb shell dumpsys meminfo net.xiaobaiai.app
 ```
 
 # 5 Platform Configuration
