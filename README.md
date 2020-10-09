@@ -4,7 +4,8 @@
 
 - Support to build cpp application or library with bazel platform
 - Support to build golang application or library with bazel platform
-- Support to build android jni library with bazel platform
+- Support to build android jni library with bazel platform(generate jni header automatically, end-to-end)
+- Support to build android application(non-platform)
 
 # 2 Environment
 
@@ -114,28 +115,50 @@ $ bazel query "kind(android_sdk, @androidsdk//...)"
 
 ## 4.3 Build
 
+### 4.3.1 C/C++
+
 ```bash
 # p_ubuntu_gcc
 $ bazel build cpp:hello-world --platforms=//platforms:p_ubuntu_gcc
 
 # p_ubuntu_arm_linux_gnueabihf
 $ bazel build cpp:hello-world --platforms=//platforms:p_ubuntu_arm_linux_gnueabihf
+```
 
+### 4.3.2 Golang
+
+```
 $ bazel build --platforms=@io_bazel_rules_go//go/toolchain:linux_amd64 golang/cmd/hello
 $ bazel build --platforms=@io_bazel_rules_go//go/toolchain:linux_arm //golang/cmd/hello
+```
 
+### 4.3.3 All
+
+```
 # build all targets
 $ bazel build --platforms=//platforms:p_ubuntu_gcc //...
+```
 
+### 4.3.4 Remote caching
+
+```
 # Remote caching
 $ bazel clean
 $ bazel build --remote_cache=grpc://10.151.176.11:8980 cpp:hello-world --platforms=//platforms:p_ubuntu_arm_linux_gnueabihf
+```
 
+### 4.3.5 JNI library
+
+```
 # Only Build Android JNI Library
 $ bazel build --platforms=//platforms:p_android_armv7a android:gen_jni_header
 $ bazel build --platforms=//platforms:p_android_armv7a android:jni_lib_shared
 $ bazel build --platforms=//platforms:p_android_aarch64 android:jni_lib_shared
+```
 
+### 4.3.6 Android APK
+
+```
 # Build and Install Android Application(including jni/java library)
 # First, you need to turn off the bazel platform feature in .bazelrc
 # archs: armeabi-v7a/arm64-v8/x86
@@ -150,5 +173,7 @@ $ bazel mobile-install android/demo/app/src/main:app
 # way2
 $ adb install bazel-bin/android/demo/app/src/main/app.apk
 ```
+
+# 5 Platform Configuration
 
 > All toolchain information is in file `toolchains/cpp/supported.bzl`.
