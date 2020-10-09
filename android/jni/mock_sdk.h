@@ -23,6 +23,10 @@ typedef enum CommonStatus {
     FAILED  = -1,
 } CommonStatus;
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 API_EXPORT
 CommonStatus InitCHandle(CHandle *handle);
 
@@ -31,5 +35,9 @@ CommonStatus DestroyCHandle(CHandle handle);
 
 // API_EXPORT
 // CommonStatus GetCStructData(CStructDesc out);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

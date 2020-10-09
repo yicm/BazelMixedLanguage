@@ -1,19 +1,18 @@
 package net.xiaobaiai.test;
 
+import net.xiaobaiai.test.CommonStatus;
+import net.xiaobaiai.test.base.Point2D;
+
 import java.util.ArrayList;
 
 import android.content.Context;
-import net.xiaobaiai.test.CommonStatus;
-import net.xiaobaiai.test.base.Point2D;
-import java.awt.Point;
 import android.graphics.PointF;
 import android.graphics.Rect;
 
 public class APIs {
     static {
-        System.out.println("java.library.path: " + System.getProperty("java.library.path"));
         try {
-            System.loadLibrary("jni_lib");
+            System.loadLibrary("app");
         } catch (Throwable ex) {
             ex.printStackTrace();
         }
@@ -32,10 +31,10 @@ public class APIs {
 
     public native CommonStatus SetPoint2DArray(Point2D[] pointArray);
 
-    public native CommonStatus SetPoint(Point point);
-    public native CommonStatus SetPointArrayList(ArrayList<Point> array);
+    public native CommonStatus SetPoint(PointF point);
+    public native CommonStatus SetPointArrayList(ArrayList<PointF> array);
 
-    public native ArrayList<Point> GetPointArrayList();
+    public native ArrayList<PointF> GetPointArrayList();
 
     public native int[][] GetInt2DArray(int row, int col);
 

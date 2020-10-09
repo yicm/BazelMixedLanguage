@@ -38,6 +38,8 @@ cc_library(
         "-landroid",
         "-lm",
     ],
+    # must be set alwayslink = True!
+    alwayslink = True,
     visibility = ["//visibility:public"],
 )
 
@@ -60,6 +62,19 @@ cc_binary(
         "-llog",
         "-landroid",
         "-lm",
+    ],
+    visibility = ["//visibility:public"],
+)
+
+android_library(
+    name = "android_java_lib",
+    srcs = glob([
+        "java/net/xiaobaiai/test/base/*.java",
+        "java/net/xiaobaiai/test/*.java",
+    ]),
+    custom_package = "net.xiaobaiai.test",
+    deps = [
+        ":jni_lib",
     ],
     visibility = ["//visibility:public"],
 )

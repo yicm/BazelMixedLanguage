@@ -36,6 +36,17 @@ static void CachingAwtPoint(JNIEnv *env) {
     }
 }
 
+GraphicsPointF graphics_pointf;
+static void CachingGraphicsPointf(JNIEnv *env) {
+    FindClass(env, "android/graphics/PointF", &graphics_pointf.clz);
+    GetField(env, &graphics_pointf.clz, "x", "F", &graphics_pointf.x);
+    GetField(env, &graphics_pointf.clz, "y", "F", &graphics_pointf.y);
+    graphics_pointf.constructor = env->GetMethodID(graphics_pointf.clz, "<init>", "(FF)V");
+    if (!graphics_pointf.constructor) {
+        TEST_LOG_E("Failed to get method id");
+    }
+}
+
 ArrayList array_list;
 static void CachingArrayList(JNIEnv *env) {
     FindClass(env, "java/util/ArrayList", &array_list.clz);
@@ -89,7 +100,7 @@ static void CachingCstruct(JNIEnv *env) {
 Point2D point2d;
 static void CachingPoint2D(JNIEnv *env) {
     // Point2D
-    FindClass(env, "net.xiaobaiai.test.base.Point2D", &point2d.clz);
+    FindClass(env, "net/xiaobaiai/test/base/Point2D", &point2d.clz);
     point2d.constructor = env->GetMethodID(point2d.clz, "<init>", "()V");
     if (!point2d.constructor) {
         TEST_LOG_E("Failed to get method id");
@@ -101,7 +112,7 @@ static void CachingPoint2D(JNIEnv *env) {
 Rect rect;
 static void CachingRect(JNIEnv *env) {
     // Rect
-    FindClass(env, "android.graphics.Rect", &rect.clz);
+    FindClass(env, "android/graphics/Rect", &rect.clz);
     rect.constructor = env->GetMethodID(rect.clz, "<init>", "()V");
     if (!rect.constructor) {
         TEST_LOG_E("Failed to get method id");
@@ -115,17 +126,18 @@ static void CachingRect(JNIEnv *env) {
 MyRect my_rect;
 static void CachingMyRect(JNIEnv *env) {
     // MyRect
-    FindClass(env, "net.xiaobaiai.test.MyRect", &my_rect.clz);
+    FindClass(env, "net/xiaobaiai/test/MyRect", &my_rect.clz);
     my_rect.constructor = env->GetMethodID(my_rect.clz, "<init>", "()V");
     if (!my_rect.constructor) {
         TEST_LOG_E("Failed to get method id");
     }
-    GetField(env, &my_rect.clz, "left_top", "Lnet/xiaobaiai/test/base/Point2D;", &my_rect.left_top);
-    GetField(env, &my_rect.clz, "right_bottom", "Lnet/xiaobaiai/test/base/Point2D;", &my_rect.right_bottom);
+    GetField(env, &my_rect.clz, "leftTop", "Lnet/xiaobaiai/test/base/Point2D;", &my_rect.left_top);
+    GetField(env, &my_rect.clz, "rightBottom", "Lnet/xiaobaiai/test/base/Point2D;", &my_rect.right_bottom);
 }
 
 void InitCaching(JNIEnv *env) {
-    CachingAwtPoint(env);
+    //CachingAwtPoint(env);
+    CachingGraphicsPointf(env);
     CachingArrayList(env);
     CachingPoint2D(env);
     CachingRect(env);
@@ -135,6 +147,7 @@ void InitCaching(JNIEnv *env) {
 
 void UninitCaching(JNIEnv *env) {
     env->DeleteGlobalRef(awt_point.clz);
+    env->DeleteGlobalRef(graphics_pointf.clz);
     env->DeleteGlobalRef(array_list.clz);
     env->DeleteGlobalRef(cstruct_cache_header.clz);
     env->DeleteGlobalRef(cstruct_cache_header.innter_class_header.clz);

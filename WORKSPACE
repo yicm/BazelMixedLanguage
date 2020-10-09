@@ -46,14 +46,47 @@ http_archive(
 my_register_toolchains()
 #register_toolchains("//toolchains/cpp:all")
 
+
+
+
+# ---------------------------------------------------------
+# Maven dependencies
+# ---------------------------------------------------------
+RULES_JVM_EXTERNAL_TAG = "3.3"
+RULES_JVM_EXTERNAL_SHA = "d85951a92c0908c80bd8551002d66cb23c3434409c814179c0ff026b53544dab"
+
+http_archive(
+    name = "rules_jvm_external",
+    strip_prefix = "rules_jvm_external-%s" % RULES_JVM_EXTERNAL_TAG,
+    sha256 = RULES_JVM_EXTERNAL_SHA,
+    url = "https://github.com/bazelbuild/rules_jvm_external/archive/%s.zip" % RULES_JVM_EXTERNAL_TAG,
+)
+
+load("@rules_jvm_external//:defs.bzl", "maven_install")
+
+maven_install(
+    artifacts = [
+        "junit:junit:4.12",
+        "androidx.appcompat:appcompat:1.2.0",
+        "androidx.constraintlayout:constraintlayout:2.0.1",
+    ],
+    repositories = [
+        # Private repositories are supported through HTTP Basic auth
+        "http://username:password@localhost:8081/artifactory/my-repository",
+        "https://jcenter.bintray.com/",
+        "https://maven.google.com",
+        "https://repo1.maven.org/maven2",
+    ],
+)
+
 # ---------------------------------------------------------
 # Android
 # ---------------------------------------------------------
 android_sdk_repository(
     name = "androidsdk",
     path = HOME + "/Android",
-    #api_level = 19,
-    #build_tools_version = "25.0.0",
+    #api_level = 28,
+    #build_tools_version = "29.0.2",
 )
 
 android_ndk_repository(

@@ -11,6 +11,14 @@ typedef struct AwtPoint_t {
     jmethodID constructor;
 } AwtPoint;
 
+// android.graphics.PointF
+typedef struct GraphicsPointF_t {
+    jclass clz;
+    jfieldID x;
+    jfieldID y;
+    jmethodID constructor;
+} GraphicsPointF;
+
 // java.util.ArrayList
 typedef struct ArrayList_t {
     jclass clz;

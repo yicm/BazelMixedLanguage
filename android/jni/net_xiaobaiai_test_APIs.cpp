@@ -15,7 +15,7 @@
 extern "C" {
 #endif
 
-extern AwtPoint awt_point;
+extern GraphicsPointF graphics_pointf;
 extern ArrayList array_list;
 extern Point2D point2d;
 extern Rect rect;
@@ -177,7 +177,22 @@ JNIEXPORT jobject JNICALL Java_net_xiaobaiai_test_APIs_SetPoint2DArray
         // step2.2: get value
         float x = env->GetFloatField(j_object, point2d.x);
         float y = env->GetFloatField(j_object, point2d.y);
+        TEST_LOG_E("array[%d], x = %f, y = %f", i, x, y);
     }
+    return getStatus(env, SUCCESS);
+}
+
+/*
+ * Class:     net_xiaobaiai_test_APIs
+ * Method:    SetPoint
+ * Signature: (Landroid/graphics/PointF;)Lnet/xiaobaiai/test/CommonStatus;
+ */
+JNIEXPORT jobject JNICALL Java_net_xiaobaiai_test_APIs_SetPoint
+  (JNIEnv *env, jobject, jobject j_pointf) {
+     // step2.2: get value
+    float x = env->GetFloatField(j_pointf, graphics_pointf.x);
+    float y = env->GetFloatField(j_pointf, graphics_pointf.y);
+    TEST_LOG_E("x = %f, y = %f", x, y);
     return getStatus(env, SUCCESS);
 }
 
@@ -199,8 +214,8 @@ JNIEXPORT jobject JNICALL Java_net_xiaobaiai_test_APIs_SetPointArrayList
 
     for (int i = 0; i < point_count; ++i) {
         jobject point = env->CallObjectMethod(j_point_array, array_list.get, i);
-        x = static_cast<double>(env->CallDoubleMethod(point, awt_point.get_x));
-        y = static_cast<double>(env->CallDoubleMethod(point, awt_point.get_y));
+        jfloat x = env->GetFloatField(point, graphics_pointf.x);
+        jfloat y = env->GetFloatField(point, graphics_pointf.y);
         env->DeleteLocalRef(point);
 
         TEST_LOG_D("x: %lf, y: %lf", x, y);
@@ -222,7 +237,7 @@ JNIEXPORT jobject JNICALL Java_net_xiaobaiai_test_APIs_GetPointArrayList
     for (int i = 0; i < array_size; i++) {
         // step 1/2: new point
         // The generated values are for testing only
-        jobject pt_object = env->NewObject(awt_point.clz, awt_point.constructor, j_obj, 0 + i, 1 + i);
+        jobject pt_object = env->NewObject(graphics_pointf.clz, graphics_pointf.constructor, j_obj, 0 + i, 1 + i);
         // step 2/2: add point to array list
         env->CallBooleanMethod(result, array_list.add, pt_object);
         env->DeleteLocalRef(pt_object);
@@ -332,7 +347,7 @@ JNIEXPORT jobject JNICALL Java_net_xiaobaiai_test_APIs_InitHandle
         TEST_LOG_E("Failed to get handle pointer.");
         return getStatus(env, FAILED);
     }
-    TEST_LOG_E("handle value: %lld", (jlong)handle);
+    TEST_LOG_E("handle value: %ld", (jlong)handle);
     env->SetLongField(j_handle, p_handle, (jlong)handle);
 
     return getStatus(env, SUCCESS);
@@ -369,13 +384,9 @@ JNIEXPORT jobject JNICALL Java_net_xiaobaiai_test_APIs_DestroyHandle
  */
 JNIEXPORT jobject JNICALL Java_net_xiaobaiai_test_APIs_GetPointf
   (JNIEnv *env, jobject j_obj) {
-    // step 1/4: find class
-    jclass pt_cls = env->FindClass("android.graphics.PointF");
-    // step 2/4: get constructor
-    jmethodID pt_constructor = env->GetMethodID(pt_cls, "<init>", "(FF)V");
-    // step 3/4: new point
     // The generated values are for testing only
-    jobject pt_object = env->NewObject(pt_cls, pt_constructor, j_obj, 1.22f, 3.14f);
+    jobject pt_object = env->NewObject(graphics_pointf.clz, 
+        graphics_pointf.constructor, j_obj, 1.22f, 3.14f);
     return pt_object;
 }
 

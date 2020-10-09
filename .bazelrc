@@ -24,4 +24,19 @@ run --action_env=GOPROXY=https://goproxy.cn
 # --------------------------
 # Way2: enable/diable platform
 # --------------------------
-build   --incompatible_enable_cc_toolchain_resolution
+#build   --incompatible_enable_cc_toolchain_resolution
+
+# --------------------------
+# Way only: build android application, disable platform
+# --------------------------
+common:android_x86 --crosstool_top=@androidndk//:default_crosstool
+common:android_x86 --cpu=x86
+common:android_x86 --host_crosstool_top=@bazel_tools//tools/cpp:toolchain
+
+common:android_armeabi-v7a --crosstool_top=@androidndk//:default_crosstool
+common:android_armeabi-v7a --cpu=armeabi-v7a
+common:android_armeabi-v7a --host_crosstool_top=@bazel_tools//tools/cpp:toolchain
+
+common:android_arm64-v8a --crosstool_top=@androidndk//:default_crosstool
+common:android_arm64-v8a --cpu=arm64-v8a
+common:android_arm64-v8a --host_crosstool_top=@bazel_tools//tools/cpp:toolchain
