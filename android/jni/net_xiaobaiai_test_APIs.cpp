@@ -79,10 +79,9 @@ JNIEXPORT jobject JNICALL Java_net_xiaobaiai_test_APIs_SetString
 JNIEXPORT jstring JNICALL Java_net_xiaobaiai_test_APIs_GetString
   (JNIEnv *env, jobject) {
     char str[60] = "Hello";
-    // 1. 如果用 const char *
+    // 1. 可以用 const char *
     //const char *str = "Hello";
-    // 2. 如果用 std::string str = std::string("Hello");
-    //      str.c_str();
+    // 2. 可以用 std::string str = std::string("Hello"); str.c_str()
 
     jstring result;
     result = env->NewStringUTF(str);

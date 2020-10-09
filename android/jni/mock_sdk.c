@@ -56,6 +56,9 @@ CommonStatus DestroyCHandle(CHandle handle)
         free(handle);
         handle = NULL;
         return FAILED;
+    } else {
+        free(handle->sub_handle);
+        handle->sub_handle = NULL;
     }
     free(handle);
     handle = NULL;
