@@ -177,7 +177,7 @@ JNIEXPORT jobject JNICALL Java_net_xiaobaiai_test_APIs_SetPoint2DArray
         // step2.2: get value
         float x = env->GetFloatField(j_object, point2d.x);
         float y = env->GetFloatField(j_object, point2d.y);
-        TEST_LOG_E("array[%d], x = %f, y = %f", i, x, y);
+        TEST_LOG_D("array[%d], x = %f, y = %f", i, x, y);
     }
     return getStatus(env, SUCCESS);
 }
@@ -336,7 +336,6 @@ JNIEXPORT jobject JNICALL Java_net_xiaobaiai_test_APIs_InitHandle
         TEST_LOG_E("Failed to init handle with %d.", status);
         return getStatus(env, status);
     }
-
     jclass clz_handle = env->GetObjectClass(j_handle);
     if (NULL == clz_handle) {
         TEST_LOG_E("Failed to get handle object class.");
@@ -393,10 +392,88 @@ JNIEXPORT jobject JNICALL Java_net_xiaobaiai_test_APIs_GetPointf
 /*
  * Class:     net_xiaobaiai_test_APIs
  * Method:    GetCStruct
- * Signature: (Lnet/xiaobaiai/test/CStruct;)Lnet/xiaobaiai/test/CommonStatus;
+ * Signature: ()Lnet/xiaobaiai/test/CStruct;
  */
 JNIEXPORT jobject JNICALL Java_net_xiaobaiai_test_APIs_GetCStruct
-  (JNIEnv *env, jobject j_obj, jobject j_struct) {
+  (JNIEnv *env, jobject) {
+    // Note: The check of parameter boundary and function return value is omitted here!!!
+    // Create Point2D
+    jobject j_point2d = env->NewObject(point2d.clz, point2d.constructor);
+    env->SetFloatField(j_point2d, point2d.x, 1.1f);
+    env->SetFloatField(j_point2d, point2d.y, 1.2f);
+    TEST_LOG_D("Create Point2d Successfully");
+    // Create Rect
+    jobject j_rect = env->NewObject(rect.clz, rect.constructor);
+    env->SetIntField(j_rect, rect.left, 1);
+    env->SetIntField(j_rect, rect.top, 2);
+    env->SetIntField(j_rect, rect.right, 3);
+    env->SetIntField(j_rect, rect.bottom, 4);
+    TEST_LOG_D("Create Rect Successfully");
+    // Create MyRect: Reuse the point that have been created
+    jobject j_my_rect = env->NewObject(my_rect.clz, my_rect.constructor);
+    env->SetObjectField(j_my_rect, my_rect.left_top, j_point2d);
+    env->SetObjectField(j_my_rect, my_rect.right_bottom, j_point2d);
+    TEST_LOG_D("Create MyRect Successfully");
+    // Create Inner Enum
+    jobject j_inner_enum_one_obj = env->GetStaticObjectField(cstruct_cache_header.inner_enum_header.clz, 
+        cstruct_cache_header.inner_enum_header.jid_one);
+    // Create Inner Class
+    jobject j_inner_class_obj = env->NewObject(cstruct_cache_header.innter_class_header.clz, cstruct_cache_header.innter_class_header.constructor);
+    char c_msg[60] = "Hello";
+    jstring j_msg = env->NewStringUTF(c_msg);
+    env->SetObjectField(j_inner_class_obj, cstruct_cache_header.innter_class_header.msg, j_msg);
+    TEST_LOG_D("Create Inner Class Successfully");
+    // Create byte[]
+    const int c_data_len = 256;
+    jbyte c_data[c_data_len] = {'b', 'i', 'a', 'd', 'a', 'm', 'm'};
+    jbyteArray j_data = env->NewByteArray(c_data_len);
+    env->SetByteArrayRegion(j_data, 0, c_data_len, c_data);
+    TEST_LOG_D("Create Byte Array Successfully");
+    // Create 2d array
+    const int c_double_d_array_row = 10;
+    const int c_double_d_array_col = 5;
+    jclass double_d_clz = env->FindClass("[I");
+    jobjectArray j_double_d_array = env->NewObjectArray(c_double_d_array_row, double_d_clz, NULL);
+    for (int i = 0; i < c_double_d_array_row; i++) {
+        jintArray j_int_array = env->NewIntArray(c_double_d_array_col);
+        int c_int_array_data[c_double_d_array_col] = {1, 2, 3, 4, 5};
+        env->SetIntArrayRegion(j_int_array, 0, c_double_d_array_col, c_int_array_data);
+        env->SetObjectArrayElement(j_double_d_array, i, j_int_array);
+    }
+    TEST_LOG_D("Create 2d Array Successfully");
+    // Create CStruct: If you created an object externally(Java Layer), you don't need to create it here.
+    jobject j_struct = env->NewObject(cstruct_cache_header.clz, cstruct_cache_header.constructor);
+    TEST_LOG_D("Create CStruct Successfully");
+    // Set values
+    env->SetObjectField(j_struct, cstruct_cache_header.jid_point2d, j_point2d);
+    env->SetBooleanField(j_struct, cstruct_cache_header.jid_ztype, JNI_FALSE);
+    env->SetCharField(j_struct, cstruct_cache_header.jid_ctype, 'Y');
+    env->SetShortField(j_struct, cstruct_cache_header.jid_stype, 8);
+    env->SetIntField(j_struct, cstruct_cache_header.jid_itype, 9);
+    env->SetLongField(j_struct, cstruct_cache_header.jid_jtype, 10);
+    env->SetFloatField(j_struct, cstruct_cache_header.jid_ftype, 11.0f);
+    env->SetDoubleField(j_struct, cstruct_cache_header.jid_dtype, 12.0);
+    env->SetObjectField(j_struct, cstruct_cache_header.jid_data, j_data);
+    env->SetObjectField(j_struct, cstruct_cache_header.jid_inner_enum, j_inner_enum_one_obj);
+    env->SetObjectField(j_struct, cstruct_cache_header.jid_innter_class, j_inner_class_obj);
+    env->SetObjectField(j_struct, cstruct_cache_header.jid_rect, j_rect);
+    env->SetObjectField(j_struct, cstruct_cache_header.jid_myrect, j_my_rect);
+    env->SetObjectField(j_struct, cstruct_cache_header.jid_double_d_array, j_double_d_array);
+
+    return j_struct;
+}
+
+/*
+ * Class:     net_xiaobaiai_test_APIs
+ * Method:    SetCStruct
+ * Signature: (Lnet/xiaobaiai/test/CStruct;)Lnet/xiaobaiai/test/CommonStatus;
+ */
+JNIEXPORT jobject JNICALL Java_net_xiaobaiai_test_APIs_SetCStruct
+  (JNIEnv *env, jobject, jobject j_struct) {
+    if (!j_struct) {
+        TEST_LOG_E("Input struct data is null.");
+        return getStatus(env, FAILED);
+    }
     // Note: The check of parameter boundary and function return value is omitted here!!!
     // Get byte[] data
     jbyteArray j_data_array = (jbyteArray)env->GetObjectField(j_struct, cstruct_cache_header.jid_data);
@@ -413,18 +490,19 @@ JNIEXPORT jobject JNICALL Java_net_xiaobaiai_test_APIs_GetCStruct
     jlong c_jtype = env->GetLongField(j_struct, cstruct_cache_header.jid_jtype);
     jfloat c_ftype = env->GetFloatField(j_struct, cstruct_cache_header.jid_ftype);
     jdouble c_dtype = env->GetDoubleField(j_struct, cstruct_cache_header.jid_dtype);
-
+    TEST_LOG_E("Get basic type value successfully");
     // Get Point2D value
     jobject j_point2d = env->GetObjectField(j_struct, cstruct_cache_header.jid_point2d);
     jfloat c_point2d_x = env->GetFloatField(j_point2d, point2d.x);
     jfloat c_point2d_y = env->GetFloatField(j_point2d, point2d.y);
-
+    TEST_LOG_E("Get Point2D value successfully");
     // Get Rect value
     jobject j_rect = env->GetObjectField(j_struct, cstruct_cache_header.jid_rect);
     jint c_rect_left = env->GetIntField(j_rect, rect.left);
     jint c_rect_top = env->GetIntField(j_rect, rect.top);
     jint c_rect_right = env->GetIntField(j_rect, rect.right);
     jint c_rect_bottom = env->GetIntField(j_rect, rect.bottom);
+    TEST_LOG_E("Get Rect value successfully");
     // Get MyRect value
     jobject j_my_rect = env->GetObjectField(j_struct, cstruct_cache_header.jid_myrect);
     jobject j_my_rect_point2d_lefttop = env->GetObjectField(j_my_rect, my_rect.left_top);
@@ -433,76 +511,22 @@ JNIEXPORT jobject JNICALL Java_net_xiaobaiai_test_APIs_GetCStruct
     jfloat c_my_rect_lefttop_y = env->GetFloatField(j_my_rect_point2d_rightbottom, point2d.y);
     jfloat c_my_rect_rightbottom_x = env->GetFloatField(j_my_rect_point2d_rightbottom, point2d.x);
     jfloat c_my_rect_rightbottom_y = env->GetFloatField(j_my_rect_point2d_rightbottom, point2d.y);
+    TEST_LOG_E("Get MyRect value successfully");
     // Get inner enum type
     jint img_format_value = env->CallIntMethod(j_struct, cstruct_cache_header.inner_enum_md);
+    TEST_LOG_E("Get Inner enum value successfully");
+    // Get inner class type
+    jobject j_inner_class = env->GetObjectField(j_struct, cstruct_cache_header.jid_innter_class);
+    jstring j_inner_class_msg = (jstring)env->GetObjectField(j_inner_class, cstruct_cache_header.innter_class_header.msg);
     
+    const char *c_str = env->GetStringUTFChars(j_inner_class_msg, NULL);
+    if (NULL == c_str) {
+        TEST_LOG_E("Failed to get string UTF chars.");
+        return getStatus(env, FAILED);
+    }
+    TEST_LOG_D("c str: %s", c_str);
     // Release byte[]
     env->ReleaseByteArrayElements(j_data_array, c_data, 0);
-    return getStatus(env, SUCCESS);
-}
-
-/*
- * Class:     net_xiaobaiai_test_APIs
- * Method:    SetCStruct
- * Signature: (Lnet/xiaobaiai/test/CStruct;)Lnet/xiaobaiai/test/CommonStatus;
- */
-JNIEXPORT jobject JNICALL Java_net_xiaobaiai_test_APIs_SetCStruct
-  (JNIEnv *env, jobject, jobject j_struct) {
-    // Note: The check of parameter boundary and function return value is omitted here!!!
-    // Create Point2D
-    jobject j_point2d = env->NewObject(point2d.clz, point2d.constructor);
-    env->SetFloatField(j_point2d, point2d.x, 1.1f);
-    env->SetFloatField(j_point2d, point2d.y, 1.2f);
-    // Create Rect
-    jobject j_rect = env->NewObject(rect.clz, rect.constructor);
-    env->SetIntField(j_rect, rect.left, 1);
-    env->SetIntField(j_rect, rect.top, 2);
-    env->SetIntField(j_rect, rect.right, 3);
-    env->SetIntField(j_rect, rect.bottom, 4);
-    // Create MyRect: Reuse the point that have been created
-    jobject j_my_rect = env->NewObject(my_rect.clz, my_rect.constructor);
-    env->SetObjectField(j_my_rect, my_rect.left_top, j_point2d);
-    env->SetObjectField(j_my_rect, my_rect.right_bottom, j_point2d);
-    // Create Inner Class
-    jobject j_inner_class_obj = env->NewObject(cstruct_cache_header.innter_class_header.clz, cstruct_cache_header.innter_class_header.constructor);
-    char c_msg[60] = "Hello";
-    jstring j_msg = env->NewStringUTF(c_msg);
-    env->SetObjectField(j_inner_class_obj, cstruct_cache_header.innter_class_header.msg, j_msg);
-    // Create byte[]
-    const int c_data_len = 256;
-    jbyte c_data[c_data_len] = {'b', 'i', 'a', 'd', 'a', 'm', 'm'};
-    jbyteArray j_data = env->NewByteArray(c_data_len);
-    env->SetByteArrayRegion(j_data, 0, c_data_len, c_data);
-    // Create 2d array
-    const int c_double_d_array_row = 10;
-    const int c_double_d_array_col = 5;
-    jclass double_d_clz = env->FindClass("[I");
-    jobjectArray j_double_d_array = env->NewObjectArray(c_double_d_array_row, double_d_clz, NULL);
-    for (int i = 0; i < c_double_d_array_row; i++) {
-        jintArray j_int_array = env->NewIntArray(c_double_d_array_col);
-        int c_int_array_data[c_double_d_array_col] = {1, 2, 3, 4, 5};
-        env->SetIntArrayRegion(j_int_array, 0, c_double_d_array_col, c_int_array_data);
-        env->SetObjectArrayElement(j_double_d_array, i, j_int_array);
-    }
-    // Create CStruct: If you created an object externally(Java Layer), you don't need to create it here.
-    if (!j_struct) {
-        TEST_LOG_E("Not created an object externally");
-        j_struct = env->NewObject(cstruct_cache_header.clz, cstruct_cache_header.constructor);
-    }
-    // Set values
-    env->SetBooleanField(j_struct, cstruct_cache_header.jid_ztype, JNI_FALSE);
-    env->SetCharField(j_struct, cstruct_cache_header.jid_ctype, 'Y');
-    env->SetShortField(j_struct, cstruct_cache_header.jid_stype, 8);
-    env->SetIntField(j_struct, cstruct_cache_header.jid_itype, 9);
-    env->SetLongField(j_struct, cstruct_cache_header.jid_jtype, 10);
-    env->SetFloatField(j_struct, cstruct_cache_header.jid_ftype, 11.0f);
-    env->SetDoubleField(j_struct, cstruct_cache_header.jid_dtype, 12.0);
-    env->SetObjectField(j_struct, cstruct_cache_header.jid_data, j_data);
-    env->SetObjectField(j_struct, cstruct_cache_header.jid_innter_class, j_inner_class_obj);
-    env->SetObjectField(j_struct, cstruct_cache_header.jid_rect, j_rect);
-    env->SetObjectField(j_struct, cstruct_cache_header.jid_myrect, j_my_rect);
-    env->SetObjectField(j_struct, cstruct_cache_header.jid_double_d_array, j_double_d_array);
-
     return getStatus(env, SUCCESS);
 }
 

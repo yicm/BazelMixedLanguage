@@ -82,7 +82,16 @@ static void CachingCstruct(JNIEnv *env) {
     GetField(env, &clazz, "rect", "Landroid/graphics/Rect;", &cstruct_cache_header.jid_rect);
     GetField(env, &clazz, "point", "Lnet/xiaobaiai/test/base/Point2D;", &cstruct_cache_header.jid_point2d);
     GetField(env, &clazz, "myRect", "Lnet/xiaobaiai/test/MyRect;", &cstruct_cache_header.jid_myrect);
+    GetField(env, &clazz, "innerEnum", "Lnet/xiaobaiai/test/CStruct$InnerEnum;", &cstruct_cache_header.jid_inner_enum);
     GetField(env, &clazz, "innerClass", "Lnet/xiaobaiai/test/CStruct$InnerClass;", &cstruct_cache_header.jid_innter_class);
+    // Inner enum
+    FindClass(env, "net/xiaobaiai/test/CStruct$InnerEnum", &cstruct_cache_header.inner_enum_header.clz);
+    cstruct_cache_header.inner_enum_header.jid_one = 
+        env->GetStaticFieldID(cstruct_cache_header.inner_enum_header.clz, "INNER_ONE", "Lnet/xiaobaiai/test/CStruct$InnerEnum;");
+    cstruct_cache_header.inner_enum_header.jid_one = 
+        env->GetStaticFieldID(cstruct_cache_header.inner_enum_header.clz, "INNER_TWO", "Lnet/xiaobaiai/test/CStruct$InnerEnum;");
+    cstruct_cache_header.inner_enum_header.jid_one = 
+        env->GetStaticFieldID(cstruct_cache_header.inner_enum_header.clz, "INNER_THREE", "Lnet/xiaobaiai/test/CStruct$InnerEnum;");
     // Innter class
     FindClass(env, "net/xiaobaiai/test/CStruct$InnerClass", &cstruct_cache_header.innter_class_header.clz);
     cstruct_cache_header.innter_class_header.constructor = env->GetMethodID(cstruct_cache_header.innter_class_header.clz, 

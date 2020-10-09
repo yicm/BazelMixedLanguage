@@ -63,6 +63,13 @@ typedef struct CstructInnerClass_t {
     jmethodID constructor;
 } CstructInnerClass;
 
+typedef struct CstructInnerEnum_t {
+    jclass clz;
+    jfieldID jid_one;
+    jfieldID jid_two;
+    jfieldID jid_three;
+} CstructInnerEnum;
+
 // net.xiaobaiai.test.CStruct
 typedef struct CstructCacheHeader_t {
     jclass clz;
@@ -80,10 +87,12 @@ typedef struct CstructCacheHeader_t {
     jfieldID jid_rect;
     jfieldID jid_point2d;
     jfieldID jid_myrect;
+    jfieldID jid_inner_enum;
     jfieldID jid_innter_class;
     jmethodID constructor;
     jmethodID inner_enum_md;
 
+    CstructInnerEnum_t inner_enum_header;
     CstructInnerClass innter_class_header;
 } CstructCacheHeader;
 

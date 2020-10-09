@@ -24,7 +24,6 @@ public class APIs {
 
     public native CommonStatus SetBaseTypeArray(int[] intArray);
 
-    //https://stackoverflow.com/questions/1610045/how-to-return-an-array-from-jni-to-java
     public native String[] GetStringArray(int size);
 
     public native CommonStatus SetStringArray(String[] strArray);
@@ -46,7 +45,7 @@ public class APIs {
 
     public native PointF GetPointf();
 
-    public native CommonStatus GetCStruct(CStruct data);
+    public native CStruct GetCStruct();
 
     public native CommonStatus SetCStruct(CStruct data);
 }

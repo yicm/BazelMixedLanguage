@@ -1,6 +1,9 @@
 android_binary(
     name = "app",
-    srcs = [":java/net/xiaobaiai/app/MainActivity.java"],
+    srcs = [
+        ":java/net/xiaobaiai/app/MainActivity.java",
+        ":java/net/xiaobaiai/app/APIsTest.java",
+    ],
     manifest = "AndroidManifest.xml",
     # To find R.class
     custom_package = "net.xiaobaiai.app",
