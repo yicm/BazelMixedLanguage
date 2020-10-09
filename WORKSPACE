@@ -44,10 +44,6 @@ http_archive(
 # register toolchain
 # ----------------------------------------------------------------------
 my_register_toolchains()
-#register_toolchains("//toolchains/cpp:all")
-
-
-
 
 # ---------------------------------------------------------
 # Maven dependencies

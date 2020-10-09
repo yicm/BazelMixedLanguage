@@ -15,6 +15,21 @@ TOOLCHAIN_CC_COMPILER = "cc_compiler"
 TOOLCHAIN_EMPTY = "toolchain_empty"
 
 TOOLCHAIN_SUPPORT_MATRIX = {
+    "macos_gcc": {
+        TOOLCHAIN_HOST_OS : "macos",
+        TOOLCHAIN_TARGET_OS : "macos",
+        TOOLCHAIN_TARGET_ARCH : "x86_64",
+        TOOLCHAIN_EMPTY : "false",
+        TOOLCHAIN_TARGET_CGO: "off", # only on or off
+        TOOLCHAIN_COMPILER_ROOT : "/usr/bin/",
+        TOOLCHAIN_INCLUDE_PATHS : [
+            "/usr/include",
+            "/usr/lib/gcc",
+            "/usr/local/include"
+        ],
+        TOOLCHAIN_IDENTIFIER : "",
+        TOOLCHAIN_CC_COMPILER : "gcc"
+    },    
     "ubuntu_gcc": {
         TOOLCHAIN_HOST_OS : "linux",
         TOOLCHAIN_TARGET_OS : "linux",
@@ -103,6 +118,4 @@ TOOLCHAIN_SUPPORT_MATRIX = {
         TOOLCHAIN_TARGET_ARCH : "x86_64",
         TOOLCHAIN_EMPTY : "true",
     },
-
-
 }
