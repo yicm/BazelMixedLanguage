@@ -21,6 +21,7 @@ extern Point2D point2d;
 extern Rect rect;
 extern MyRect my_rect;
 extern CstructCacheHeader cstruct_cache_header;
+extern StaticMethodHeader static_method_header;
 
 // Is automatically called once the native code is loaded via System.loadLibary(...);
 jint JNI_OnLoad(JavaVM* vm, void* reserved) {
@@ -527,6 +528,19 @@ JNIEXPORT jobject JNICALL Java_net_xiaobaiai_test_APIs_SetCStruct
     // Release byte[]
     env->ReleaseByteArrayElements(j_data_array, c_data, 0);
     return getStatus(env, SUCCESS);
+}
+
+/*
+ * Class:     net_xiaobaiai_test_APIs
+ * Method:    CallStaticMethod
+ * Signature: ()V
+ */
+JNIEXPORT void JNICALL Java_net_xiaobaiai_test_APIs_CallStaticMethod
+  (JNIEnv *env, jobject) {
+    jstring j_str = env->NewStringUTF("Hello Static Method");  
+    env->CallStaticVoidMethod(static_method_header.clz, static_method_header.static_md, j_str, 100);  
+
+    env->DeleteLocalRef(j_str);
 }
 
 #ifdef __cplusplus

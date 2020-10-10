@@ -144,6 +144,16 @@ static void CachingMyRect(JNIEnv *env) {
     GetField(env, &my_rect.clz, "rightBottom", "Lnet/xiaobaiai/test/base/Point2D;", &my_rect.right_bottom);
 }
 
+StaticMethodHeader static_method_header;
+static void CachingStaticMethods(JNIEnv *env) {
+    FindClass(env, "net/xiaobaiai/test/StaticMethods", &static_method_header.clz);
+    static_method_header.static_md = env->GetStaticMethodID(static_method_header.clz, 
+        "callStaticMethod", "(Ljava/lang/String;I)V");
+    if (!static_method_header.static_md) {
+        TEST_LOG_E("Failed to get method id");
+    }
+}
+
 void InitCaching(JNIEnv *env) {
     //CachingAwtPoint(env);
     CachingGraphicsPointf(env);
@@ -152,10 +162,11 @@ void InitCaching(JNIEnv *env) {
     CachingRect(env);
     CachingMyRect(env);
     CachingCstruct(env);
+    CachingStaticMethods(env);
 }
 
 void UninitCaching(JNIEnv *env) {
-    env->DeleteGlobalRef(awt_point.clz);
+    //env->DeleteGlobalRef(awt_point.clz);
     env->DeleteGlobalRef(graphics_pointf.clz);
     env->DeleteGlobalRef(array_list.clz);
     env->DeleteGlobalRef(cstruct_cache_header.clz);
@@ -163,4 +174,5 @@ void UninitCaching(JNIEnv *env) {
     env->DeleteGlobalRef(point2d.clz);
     env->DeleteGlobalRef(rect.clz);
     env->DeleteGlobalRef(my_rect.clz);
+    env->DeleteGlobalRef(static_method_header.clz);
 }

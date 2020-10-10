@@ -125,6 +125,12 @@ public class APIsTest {
         }
     }
 
+    private void testCallJavaStaticMethod() {
+        for (int i = 0; i < TEST_NUM; i++) {
+            apis.CallStaticMethod();
+        }
+    }
+
     public void Start() {
         testSetString();
         testGetString();
@@ -138,5 +144,6 @@ public class APIsTest {
         testInitDestroyHandle();
         testGetPointf();
         testGetSetCStruct();
+        testCallJavaStaticMethod();
     }
 }

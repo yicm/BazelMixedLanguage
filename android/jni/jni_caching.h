@@ -96,6 +96,11 @@ typedef struct CstructCacheHeader_t {
     CstructInnerClass innter_class_header;
 } CstructCacheHeader;
 
+typedef struct StaticMethodsHeader_t {
+    jclass clz;
+    jmethodID static_md;
+} StaticMethodHeader;
+
 void InitCaching(JNIEnv *env);
 
 void UninitCaching(JNIEnv *env);

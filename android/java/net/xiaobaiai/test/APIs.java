@@ -48,4 +48,6 @@ public class APIs {
     public native CStruct GetCStruct();
 
     public native CommonStatus SetCStruct(CStruct data);
+
+    public native void CallStaticMethod();
 }
